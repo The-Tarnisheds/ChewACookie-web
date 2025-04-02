@@ -4,9 +4,9 @@ import Header from "../components/Header";
 
 export default function Root() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-beige">
       <Header />
-      <main className="container mx-auto p-4">
+      <main className="bg-beige container mx-auto p-4">
         <Outlet />
       </main>
       {/* Footer (opcional) */}
