@@ -1,6 +1,7 @@
 import app from "./app";
 import dotenv from 'dotenv';
 import { sequelize } from "./config/db";
+
 dotenv.config();
 
 const PORT = 3000;
