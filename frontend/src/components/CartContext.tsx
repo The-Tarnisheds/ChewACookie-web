@@ -21,10 +21,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id);
+      const existingItem = prevCart.find((item) => item.id_producto === product.id_producto);
       if (existingItem) {
         return prevCart.map((item) =>
-          item.id === product.id
+          item.id_producto === product.id_producto
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -34,7 +34,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const removeFromCart = (productId: number) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    setCart((prevCart) => prevCart.filter((item) => item.id_producto !== productId));
   };
 
   const updateQuantity = (productId: number, newQuantity: number) => {
@@ -44,7 +44,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
+        item.id_producto === productId ? { ...item, quantity: newQuantity } : item
       )
     );
   };

@@ -10,7 +10,7 @@ interface CartAsideProps {
 
 export default function CartAside({ isOpen, onClose }: CartAsideProps) {
   const { cart, removeFromCart, updateQuantity } = useCart();
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce((sum, item) => sum + item.precio * item.quantity, 0);
 
   // Evita scroll del fondo cuando el carrito está abierto
   useEffect(() => {
@@ -48,24 +48,24 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
               </p>
             ) : (
               cart.map((item) => (
-                <div key={item.id} className="border-b py-4">
+                <div key={item.id_producto} className="border-b py-4">
                   <div className="flex justify-between items-center">
                     <img
-                      src={item.image}
-                      alt={item.name}
+                      src={item.imagen}
+                      alt={item.nombre}
                       className="w-16 h-16 object-cover rounded"
                     />
                     <div>
-                      <h3 className="font-medium">{item.name}</h3>
+                      <h3 className="font-medium">{item.nombre}</h3>
                       <p className="text-gray-600">
-                        ${item.price.toLocaleString()}
+                        ${item.precio.toLocaleString()}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() =>
                           item.quantity > 1 &&
-                          updateQuantity(item.id, item.quantity - 1)
+                          updateQuantity(item.id_producto, item.quantity - 1)
                         }
                         className="p-1 text-gray-500 hover:text-gray-700"
                         aria-label="Disminuir cantidad"
@@ -75,7 +75,7 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
                       <span className="w-6 text-center">{item.quantity}</span>
                       <button
                         onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
+                          updateQuantity(item.id_producto, item.quantity + 1)
                         }
                         className="p-1 text-gray-500 hover:text-gray-700"
                         aria-label="Aumentar cantidad"
@@ -83,7 +83,7 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
                         <FaPlus />
                       </button>
                       <button
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => removeFromCart(item.id_producto)}
                         className="p-1 text-red-500 hover:text-red-700 ml-2"
                         aria-label="Eliminar producto"
                       >

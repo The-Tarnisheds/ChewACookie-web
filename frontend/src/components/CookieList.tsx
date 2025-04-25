@@ -1,14 +1,21 @@
 // src/components/CookieList.tsx
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { db } from "../data/db";
 import CookieItem from "./CookieItem";
-import { useCart } from "./CartContext";
+import { Product } from "../types/product";
 
 export default function CookieList() {
   const scrollContainer = useRef<HTMLDivElement>(null);
-  const { addToCart } = useCart();
+  const [productos, setProductos] = useState<Product[]>([]);
 
+    useEffect(() => {
+        fetch("http://localhost:3000/api/cookies")
+          .then(res => res.json())
+          .then((data) => {
+            setProductos(data.results); 
+          })
+          .catch(err => console.error('Error al cargar productos:', err));
+      }, []);
   const scroll = (scrollOffset: number) => {
     if (scrollContainer.current) {
       scrollContainer.current.scrollBy({
@@ -36,8 +43,8 @@ export default function CookieList() {
           ref={scrollContainer}
           className="flex overflow-x-auto pb-4 gap-6 scrollbar-hide"
         >
-          {db.map((product) => (
-            <CookieItem key={product.id} product={product} />
+          {productos.map((producto) => (
+                  <CookieItem key={producto.id_producto} product={producto} />
           ))}
         </div>
 
