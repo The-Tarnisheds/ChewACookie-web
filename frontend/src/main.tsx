@@ -5,6 +5,7 @@ import { CartProvider } from "./components/CartContext"; // Importa el provider
 import Root from "./routes/Root";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import AboutUs from "./pages/AboutUs";
 
 const router = createBrowserRouter([
   {
@@ -15,15 +16,15 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
+      {
+        path: "aboutus",
+        element: <AboutUs />,
+      },
     ],
   },
   {
-    children: [
-      {
-        path: "login",
-        element: <LoginPage />,
-      },
-    ],
+    path: "login", // La ruta login sigue existiendo, pero el acceso es opcional
+    element: <LoginPage />,
   },
 ]);
 

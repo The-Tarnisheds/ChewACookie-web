@@ -41,7 +41,7 @@ export default function Header() {
               Promociones
             </Link>
             <Link
-              to="/promociones"
+              to="/aboutus"
               className="bg-redchew border-1 p-2 rounded-3xl text-whitechew text-center hover:bg-brownchew transition-colors w-30"
             >
               Nosotros
