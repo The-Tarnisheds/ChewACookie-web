@@ -1,10 +1,10 @@
 import { useState } from "react";
 import CartAside from "../components/CartAside";
-import { useCart } from "../components/CartContext";
+//import { useCart } from "../components/CartContext";
 import { motion } from "framer-motion";
 
 export default function AboutUs() {
-  const { cartItemsCount } = useCart();
+  //const { cartItemsCount } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const fadeInUp = {

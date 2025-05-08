@@ -29,13 +29,13 @@ export default function Header() {
               Inicio
             </Link>
             <Link
-              to="/productos"
+              to="/catalogo"
               className="bg-redchew border-1 p-2 rounded-3xl text-whitechew text-center hover:bg-brownchew transition-colors w-30"
             >
               Catálogo
             </Link>
             <Link
-              to="/nosotros"
+              to="/promociones"
               className="bg-redchew border-1 p-2 rounded-3xl text-whitechew text-center hover:bg-brownchew transition-colors w-30"
             >
               Promociones

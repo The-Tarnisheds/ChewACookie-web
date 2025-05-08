@@ -6,6 +6,8 @@ import Root from "./routes/Root";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import AboutUs from "./pages/AboutUs";
+import Catalogo from "./pages/Catalogo";
+import RegisterPage from "./pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -20,11 +22,19 @@ const router = createBrowserRouter([
         path: "aboutus",
         element: <AboutUs />,
       },
+      {
+        path: "catalogo",
+        element: <Catalogo />,
+      },
     ],
   },
   {
-    path: "login", // La ruta login sigue existiendo, pero el acceso es opcional
+    path: "login",
     element: <LoginPage />,
+  },
+  {
+    path: "register",
+    element: <RegisterPage />,
   },
 ]);
 

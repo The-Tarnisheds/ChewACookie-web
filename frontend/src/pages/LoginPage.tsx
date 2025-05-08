@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { motion } from "framer-motion";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <main className="bg-beige min-h-screen flex items-center justify-center px-4">
-      <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md space-y-6">
+      <motion.div
+        className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md space-y-6"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <h1 className="text-3xl font-bold text-center text-[#592d17] font-serif">
           Inicia sesión
         </h1>
@@ -46,7 +52,7 @@ export default function LoginPage() {
         </div>
 
         {/* Enlace de recuperar contraseña */}
-        <div className="text-right">
+        <div className="text-center">
           <a href="#" className="text-sm text-[#592d17] hover:underline">
             ¿Olvidaste tu contraseña?
           </a>
@@ -65,7 +71,16 @@ export default function LoginPage() {
             </span>
           </button>
         </div>
-      </div>
+
+        <div className="text-center">
+          <a
+            href="/register"
+            className="text-sm text-[#592d17] hover:underline"
+          >
+            ¿No tienes cuenta? Regístrate aquí
+          </a>
+        </div>
+      </motion.div>
     </main>
   );
 }
