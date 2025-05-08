@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
+import ListBoxLocation from "../components/ListBoxLocation";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -72,6 +73,34 @@ export default function RegisterPage() {
             required
           />
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label className="block text-black text-sm font-medium">
+              Direccion
+            </label>
+            <input
+              type="text"
+              placeholder="Nombre Calle"
+              className="w-full px-4 py-2 rounded-md bg-beige text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#592d17]"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-black text-sm font-medium">
+              Numero
+            </label>
+            <input
+              type="text"
+              placeholder="Ej: 452"
+              className="w-full px-4 py-2 rounded-md bg-beige text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#592d17]"
+              required
+            />
+          </div>
+        </div>
+
+        <ListBoxLocation/>
 
         {/* Contraseña */}
         <div className="space-y-2">
