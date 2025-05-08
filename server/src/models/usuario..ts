@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db';  // Asegúrate de tener la conexión correcta con la base de datos
+import { PassThrough } from 'stream';
 
 const Region = sequelize.define('region', {
     id_region:{
@@ -67,7 +68,8 @@ const Usuario = sequelize.define('usuario', {
             model: Region,
             key: 'id_region'
           }
-    },id_comuna:{
+    },
+    id_comuna:{
         type: DataTypes.INTEGER,
         allowNull:false,
         references:{
@@ -75,6 +77,14 @@ const Usuario = sequelize.define('usuario', {
             key: 'id_comuna'
           }
     },
+    pass:{
+        type: DataTypes.STRING(100),
+        allowNull: false,
+    },
+    pass2:{
+        type: DataTypes.STRING(100),
+        allowNull: false,
+    }
 }, {
     schema: 'chew',
     tableName: 'usuario',
@@ -104,14 +114,14 @@ const Direccion = sequelize.define('direccion', {
         type: DataTypes.STRING(10),
         allowNull: false,
     },
-    comuna: {
+    id_comuna: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Comuna,
             key: 'id_comuna'
     }},
-    region: {
+    id_region: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -119,7 +129,12 @@ const Direccion = sequelize.define('direccion', {
             key: 'id_region'
         }
     },
-})
+}, {
+    schema: 'chew',
+    tableName: 'direccion',
+    timestamps: false,
+});
+
 
 Region.hasMany(Comuna, {
     foreignKey: 'id_region'
