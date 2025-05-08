@@ -2,17 +2,7 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headless
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import { useState, useEffect } from 'react'
 
-const people = [
-  { id: 1, name: 'Metropolitana' },
-  { id: 2, name: 'Metropolitana' },
-  { id: 3, name: 'Metropolitana' },
-  { id: 4, name: 'Metropolitana' }
-]
 
-type Person = {
-  id: number | string;
-  name: string;
-};
 interface Region {
   id_region: number
   nombre_region: string
