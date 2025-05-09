@@ -1,4 +1,5 @@
 import CookieList from "../components/CookieList";
+import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function HomePage() {
   return (
@@ -40,6 +41,7 @@ export default function HomePage() {
         </div>
       </header>
       <CookieList />
+      <WhatsAppButton />
     </main>
   );
 }

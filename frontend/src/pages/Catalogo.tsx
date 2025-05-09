@@ -1,6 +1,7 @@
 import CookieGrid from "../components/CookieGrid"; // <--- CAMBIO AQUÍ
 import CartAside from "../components/CartAside";
 import { useState } from "react";
+import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function Catalogo() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -23,6 +24,8 @@ export default function Catalogo() {
       </section>
 
       <CartAside isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+      <WhatsAppButton />
     </main>
   );
 }

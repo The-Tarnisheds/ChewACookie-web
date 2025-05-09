@@ -2,6 +2,7 @@ import { useState } from "react";
 import CartAside from "../components/CartAside";
 //import { useCart } from "../components/CartContext";
 import { motion } from "framer-motion";
+import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function AboutUs() {
   //const { cartItemsCount } = useCart();
@@ -85,6 +86,7 @@ export default function AboutUs() {
 
       {/* CartAside */}
       <CartAside isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <WhatsAppButton />
     </main>
   );
 }
