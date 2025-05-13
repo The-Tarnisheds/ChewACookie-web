@@ -14,11 +14,21 @@ interface Comuna {
   id_region: number
 }
 
-export default function Example() {
+interface Props {
+  selectedRegion: Region | null
+  setSelectedRegion: (region: Region | null) => void
+  selectedComuna: Comuna | null
+  setSelectedComuna: (comuna: Comuna | null) => void
+}
+
+export default function Example({
+  selectedRegion,
+  setSelectedRegion,
+  selectedComuna,
+  setSelectedComuna,
+}: Props): React.JSX.Element {
   const [regions, setRegions] = useState<Region[]>([])
-  const [selectedRegion, setSelectedRegion] = useState<Region | null>(null)
   const [comunas, setComunas] = useState<Comuna[]>([])
-  const [selectedComuna, setSelectedComuna] = useState<Comuna | null>(null)
 
 
   useEffect(() => {
