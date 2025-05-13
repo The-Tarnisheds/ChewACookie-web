@@ -80,10 +80,6 @@ const Usuario = sequelize.define('usuario', {
     pass:{
         type: DataTypes.STRING(100),
         allowNull: false,
-    },
-    pass2:{
-        type: DataTypes.STRING(100),
-        allowNull: false,
     }
 }, {
     schema: 'chew',

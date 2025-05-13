@@ -39,8 +39,7 @@ const createUser = async (req: Request, res: Response): Promise<any> =>  {
             telefono,
             id_region: comuna?.get('id_region'),
             id_comuna: comuna?.get('id_comuna'),
-            pass: hashedPassword,
-            pass2: hashedPassword2
+            pass: hashedPassword
           });
           console.log('Nuevo usuario:', nuevoUsuario.toJSON());
 
