@@ -1,5 +1,11 @@
 // src/context/CartContext.tsx
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { Product } from "../types/product";
 
 interface CartItem extends Product {
@@ -16,9 +22,25 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>([]);
+// Clave para localStorage
+const CART_STORAGE_KEY = "shopping_cart";
 
+export function CartProvider({ children }: { children: ReactNode }) {
+  // Cargar el carrito desde localStorage al inicio
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    if (typeof window !== "undefined") {
+      const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+      return savedCart ? JSON.parse(savedCart) : [];
+    }
+    return [];
+  });
+
+  // Guardar en localStorage cada vez que el carrito cambie
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  }, [cart]);
+
+  // Resto del código (addToCart, removeFromCart, etc.) sigue igual...
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find(
