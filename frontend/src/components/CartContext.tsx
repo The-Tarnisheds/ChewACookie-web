@@ -21,7 +21,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id_producto === product.id_producto);
+      const existingItem = prevCart.find(
+        (item) => item.id_producto === product.id_producto
+      );
       if (existingItem) {
         return prevCart.map((item) =>
           item.id_producto === product.id_producto
@@ -34,7 +36,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const removeFromCart = (productId: number) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id_producto !== productId));
+    setCart((prevCart) =>
+      prevCart.filter((item) => item.id_producto !== productId)
+    );
   };
 
   const updateQuantity = (productId: number, newQuantity: number) => {
@@ -44,7 +48,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id_producto === productId ? { ...item, quantity: newQuantity } : item
+        item.id_producto === productId
+          ? { ...item, quantity: newQuantity }
+          : item
       )
     );
   };

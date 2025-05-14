@@ -1,7 +1,8 @@
 // src/components/CartAside.tsx
 import { useCart } from "./CartContext";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import CheckoutModal from "./CheckOutModal";
 
 interface CartAsideProps {
   isOpen: boolean;
@@ -10,8 +11,11 @@ interface CartAsideProps {
 
 export default function CartAside({ isOpen, onClose }: CartAsideProps) {
   const { cart, removeFromCart, updateQuantity } = useCart();
-  const total = cart.reduce((sum, item) => sum + item.precio * item.quantity, 0);
-
+  const total = cart.reduce(
+    (sum, item) => sum + item.precio * item.quantity,
+    0
+  );
+  const [showCheckout, setShowCheckout] = useState(false);
   // Evita scroll del fondo cuando el carrito está abierto
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
@@ -103,12 +107,11 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
               <span>${total.toLocaleString()}</span>
             </div>
             <button
-              className="w-full bg-redchew hover:bg-brownchew text-white py-3 rounded-lg transition-colors"
               onClick={() => {
-                // FUTURO CHECKOUT
-                alert("Ir al checkout (aún no implementado)");
-                onClose();
+                setShowCheckout(true);
+                onClose(); // Cierra el carrito
               }}
+              className="w-full bg-redchew text-white py-2 rounded-xl hover:bg-brownchew transition-colors"
             >
               ir al Checkout
             </button>
@@ -122,6 +125,13 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
           className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
           onClick={onClose}
           aria-label="Cerrar carrito al hacer clic fuera"
+        />
+      )}
+      {/* Modal de Checkout */}
+      {showCheckout && (
+        <CheckoutModal
+          isOpen={showCheckout}
+          onClose={() => setShowCheckout(false)}
         />
       )}
     </>
