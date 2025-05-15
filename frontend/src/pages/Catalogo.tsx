@@ -2,6 +2,7 @@ import CookieGrid from "../components/CookieGrid"; // <--- CAMBIO AQUÍ
 import CartAside from "../components/CartAside";
 import { useState } from "react";
 import WhatsAppButton from "../components/WhatsAppButton";
+import Footer from "../components/Footer";
 
 export default function Catalogo() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -18,7 +19,6 @@ export default function Catalogo() {
         </p>
       </header>
 
-      {/* Contenedor estilo ecommerce */}
       <section className="bg-[#f2e1c2] max-w-5xl mx-auto rounded-xl p-6 shadow-lg">
         <CookieGrid />
       </section>
@@ -26,6 +26,9 @@ export default function Catalogo() {
       <CartAside isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       <WhatsAppButton />
+      <div className="flex flex-col min-h-screen">
+        <Footer />
+      </div>
     </main>
   );
 }

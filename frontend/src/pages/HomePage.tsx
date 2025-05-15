@@ -1,4 +1,5 @@
 import CookieList from "../components/CookieList";
+import Footer from "../components/Footer";
 import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function HomePage() {
@@ -42,6 +43,9 @@ export default function HomePage() {
       </header>
       <CookieList />
       <WhatsAppButton />
+      <div className="flex flex-col min-h-screen">
+        <Footer />
+      </div>
     </main>
   );
 }

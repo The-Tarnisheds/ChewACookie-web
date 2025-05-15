@@ -1,4 +1,3 @@
-// src/components/CheckoutModal.tsx
 import { useCart } from "./CartContext";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
@@ -121,7 +120,7 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               </div>
             )}
 
-            {/* Total y botones */}
+            {/* Total */}
             <div className="mt-6 text-right">
               <div className="text-xl font-bold mb-4">
                 Total: ${total.toLocaleString()}

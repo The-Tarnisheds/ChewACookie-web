@@ -1,4 +1,3 @@
-// src/components/CartAside.tsx
 import { useCart } from "./CartContext";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -100,7 +99,7 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
             )}
           </div>
 
-          {/* Total y botón */}
+          {/* Total */}
           <div className="border-t p-4">
             <div className="flex justify-between mb-4 font-bold text-lg">
               <span>Total:</span>
@@ -109,7 +108,7 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
             <button
               onClick={() => {
                 setShowCheckout(true);
-                onClose(); // Cierra el carrito
+                onClose();
               }}
               className="w-full bg-redchew text-white py-2 rounded-xl hover:bg-brownchew transition-colors"
             >
@@ -119,7 +118,6 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
         </div>
       </div>
 
-      {/* Fondo traslucido*/}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import CartAside from "../components/CartAside";
-//import { useCart } from "../components/CartContext";
 import { motion } from "framer-motion";
 import WhatsAppButton from "../components/WhatsAppButton";
+import Footer from "../components/Footer";
 
 export default function AboutUs() {
-  //const { cartItemsCount } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const fadeInUp = {
@@ -20,7 +19,7 @@ export default function AboutUs() {
   return (
     <main className="bg-beige min-h-screen">
       <section className="container mx-auto px-4 py-10 space-y-10">
-        {/* Imagen ilustrativa centrada */}
+        {/* Imagen centrada */}
         <motion.div
           className="w-full flex justify-center"
           variants={fadeInUp}
@@ -45,8 +44,8 @@ export default function AboutUs() {
             Sobre Nosotros
           </h1>
           <p className="text-black text-lg md:text-xl font-sans mb-4">
-            En <strong>Cookie Mood</strong> creemos que cada galleta debe contar
-            una historia...
+            En <strong>Chew A Cookie</strong> creemos que cada galleta debe
+            contar una historia...
           </p>
           <p className="text-black text-lg md:text-xl font-sans">
             Usamos solo ingredientes seleccionados de alta calidad...
@@ -87,6 +86,9 @@ export default function AboutUs() {
       {/* CartAside */}
       <CartAside isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <WhatsAppButton />
+      <div className="flex flex-col min-h-screen">
+        <Footer />
+      </div>
     </main>
   );
 }

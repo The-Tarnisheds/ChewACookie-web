@@ -1,4 +1,3 @@
-// src/components/CookieGrid.tsx
 import { useEffect, useState } from "react";
 import CookieItem from "./CookieItem";
 import { Product } from "../types/product";

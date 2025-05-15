@@ -1,4 +1,3 @@
-// src/context/CartContext.tsx
 import {
   createContext,
   useContext,
@@ -40,7 +39,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
   }, [cart]);
 
-  // Resto del código (addToCart, removeFromCart, etc.) sigue igual...
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find(

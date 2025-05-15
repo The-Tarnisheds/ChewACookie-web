@@ -1,4 +1,3 @@
-// src/components/CookieList.tsx
 import { useRef, useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import CookieItem from "./CookieItem";
@@ -8,14 +7,14 @@ export default function CookieList() {
   const scrollContainer = useRef<HTMLDivElement>(null);
   const [productos, setProductos] = useState<Product[]>([]);
 
-    useEffect(() => {
-        fetch("http://localhost:3000/api/cookies")
-          .then(res => res.json())
-          .then((data) => {
-            setProductos(data.results); 
-          })
-          .catch(err => console.error('Error al cargar productos:', err));
-      }, []);
+  useEffect(() => {
+    fetch("http://localhost:3000/api/cookies")
+      .then((res) => res.json())
+      .then((data) => {
+        setProductos(data.results);
+      })
+      .catch((err) => console.error("Error al cargar productos:", err));
+  }, []);
   const scroll = (scrollOffset: number) => {
     if (scrollContainer.current) {
       scrollContainer.current.scrollBy({
@@ -27,7 +26,9 @@ export default function CookieList() {
 
   return (
     <section className="relative container mx-auto px-4 py-8">
-      <h2 className="text-4xl font-bold text-center mb-8">MENU</h2>
+      <h2 className="text-center text-5xl font-bold text-amber-800 mb-4">
+        Nuestro Menú
+      </h2>
 
       <div className="relative">
         {/* Flechas de navegación */}
@@ -44,7 +45,7 @@ export default function CookieList() {
           className="flex overflow-x-auto pb-4 gap-6 scrollbar-hide"
         >
           {productos.map((producto) => (
-                  <CookieItem key={producto.id_producto} product={producto} />
+            <CookieItem key={producto.id_producto} product={producto} />
           ))}
         </div>
 

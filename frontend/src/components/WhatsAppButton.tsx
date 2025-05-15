@@ -1,4 +1,3 @@
-// components/WhatsAppButton.tsx
 import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
@@ -13,7 +12,7 @@ const WhatsAppButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 300); // pequeño delay elegante
+    const timer = setTimeout(() => setIsVisible(true), 300);
     return () => clearTimeout(timer);
   }, []);
 
