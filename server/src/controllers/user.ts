@@ -10,10 +10,10 @@ const findUserByEmail = async (email : string) => {
   }
 
 const createUser = async (req: Request, res: Response): Promise<any> =>  {
-    const {nombres, apellidos, email, calle, numCalle, telefono, nombre_comuna, pass, pass2} = req.body
+    const {nombre, apellidos, email, calle, numCalle, telefono, nombre_comuna, pass, pass2} = req.body
     try {
 
-      if(!nombres || !apellidos || !email || !calle || !numCalle || !telefono || !nombre_comuna || !pass || !pass2){
+      if(!nombre || !apellidos || !email || !calle || !numCalle || !telefono || !nombre_comuna || !pass || !pass2){
           return res.status(HttpStatusCode.BAD_REQUEST).json({
             message: 'Todos los datos son obligatorios',
             success: false
@@ -33,7 +33,7 @@ const createUser = async (req: Request, res: Response): Promise<any> =>  {
           })
 
         const nuevoUsuario = await Usuario.create({
-            nombres,
+            nombre,
             apellidos,
             email,
             telefono,
