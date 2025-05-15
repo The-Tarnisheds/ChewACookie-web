@@ -1,4 +1,4 @@
-import { FaInstagram, FaTiktok } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -54,9 +54,13 @@ export default function Footer() {
           </div>
 
           {/* Columna 3: Redes sociales */}
-          <div className="text-center md:text-right">
-            <h3 className="font-bold text-lg mb-4">Síguenos</h3>
-            <div className="flex justify-center md:justify-end space-x-4">
+          <div className="flex flex-col items-center md:items-end">
+            {" "}
+            {/* Cambio clave aquí */}
+            <h3 className="font-bold text-lg mb-4 text-center md:text-right">
+              Siguenos
+            </h3>
+            <div className="flex space-x-4">
               <a
                 href="https://instagram.com/chewacookie.cl"
                 target="_blank"
@@ -72,6 +76,14 @@ export default function Footer() {
                 className="text-2xl hover:text-redchew"
               >
                 <FaTiktok />
+              </a>
+              <a
+                href="https://facebook.com/profile.php?id=61576236873094"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-2xl hover:text-redchew"
+              >
+                <FaFacebook />
               </a>
             </div>
           </div>
