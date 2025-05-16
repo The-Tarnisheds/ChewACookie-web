@@ -250,12 +250,15 @@ export default function RegisterForm() {
 
         {/* Botón de Registro */}
         <div>
-          <button
-            type="submit"
-            className="w-full mt-7 py-2 px-4 bg-[#592d17] text-white rounded-md font-medium hover:bg-[#452212] transition"
-          >
-            Registrarse
-          </button>
+            <button
+              type="submit"
+              className="w-full mt-7 py-2 px-4 bg-[#592d17] text-white rounded-md font-medium hover:bg-[#452212] transition"
+            >
+              <a href="/">
+                  Registrarse
+              </a>
+            </button>
+          
         </div>
       </motion.form>
     </div>

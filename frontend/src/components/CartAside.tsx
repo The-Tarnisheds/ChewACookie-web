@@ -26,7 +26,7 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
   return (
     <>
       <div
-        className={`fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 right-0 w-full max-w-md bg-pinkchew shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
