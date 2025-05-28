@@ -1,19 +1,87 @@
 import { useCart } from "./CartContext";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { createPreference } from "../services/mercadoPago";
 
 interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+// Declaración para TypeScript del objeto MercadoPago
+declare global {
+  interface Window {
+    MercadoPago: any;
+  }
+}
+
 export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const { cart, removeFromCart, updateQuantity } = useCart();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const total = cart.reduce(
     (sum, item) => sum + item.precio * item.quantity,
     0
   );
+
+  // Cargar SDK de MercadoPago
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://sdk.mercadopago.com/js/v2";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handlePayment = async () => {
+    if (cart.length === 0) return;
+
+    setIsProcessing(true);
+    setError(null);
+
+    try {
+      // Preparamos los items para MercadoPago
+      const itemsForMP = cart.map((item) => ({
+        nombre: item.nombre,
+        precio: item.precio,
+        cantidad: item.quantity,
+      }));
+
+      // Creamos la preferencia usando el servicio
+      const { id } = await createPreference(itemsForMP);
+
+      // Redirigimos al checkout de MercadoPago
+      if (window.MercadoPago) {
+        const mp = new window.MercadoPago(
+          process.env.NEXT_PUBLIC_MP_PUBLIC_KEY || "TEST-xxxx",
+          {
+            locale: "es-CL",
+          }
+        );
+
+        mp.checkout({
+          preference: {
+            id: id,
+          },
+          autoOpen: true,
+        });
+      } else {
+        throw new Error("El SDK de MercadoPago no se cargó correctamente");
+      }
+    } catch (err) {
+      console.error("Error al procesar el pago:", err);
+      setError(
+        "Ocurrió un error al procesar el pago. Por favor, intenta nuevamente."
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const backdrop = {
     hidden: { opacity: 0 },
@@ -120,7 +188,7 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               </div>
             )}
 
-            {/* Total */}
+            {/* Total y botones */}
             <div className="mt-6 text-right">
               <div className="text-xl font-bold mb-4">
                 Total: ${total.toLocaleString()}
@@ -133,12 +201,18 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                   Cancelar
                 </button>
                 <button
-                  className="bg-redchew hover:bg-brownchew text-white py-2 px-6 rounded-lg"
-                  onClick={() => alert("Pago aún no implementado")}
+                  className="bg-redchew hover:bg-brownchew text-white py-2 px-6 rounded-lg disabled:opacity-50"
+                  onClick={handlePayment}
+                  disabled={isProcessing || cart.length === 0}
                 >
-                  Pagar
+                  {isProcessing ? "Procesando..." : "Pagar"}
                 </button>
               </div>
+              {error && (
+                <div className="mt-2 text-red-500 text-sm text-right">
+                  {error}
+                </div>
+              )}
             </div>
           </motion.div>
         </motion.div>
