@@ -49,7 +49,7 @@ const Usuario = sequelize.define('usuario', {
         type: DataTypes.STRING(100),
         allowNull: false,
     },
-    nombres: {
+    nombre: {
         type: DataTypes.STRING(100),
         allowNull: false,
     },

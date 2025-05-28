@@ -23,7 +23,7 @@ export default function RegisterForm() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [formulario, setFormulario] = useState({
-        nombres: '',
+        nombre: '',
         apellidos:'',
         email: '',
         calle:'',
@@ -57,7 +57,7 @@ export default function RegisterForm() {
         ...formulario,
         pass: password,
         pass2:confirmPassword,
-        nombre_comuna: comuna?.nombre_comuna || "", // solo el nombre, como pide el backend
+        nombre_comuna: comuna?.nombre_comuna || "",
     };
     try {
         const res = await fetch("http://localhost:3000/api/users/create", {
@@ -97,9 +97,9 @@ export default function RegisterForm() {
               Nombre
             </label>
             <input
-            name="nombres"
+            name="nombre"
             type="text"
-            value={formulario.nombres}
+            value={formulario.nombre}
             onChange={handleInputChange}
             placeholder="Tu nombre"
             className="w-full px-4 py-2 rounded-md bg-beige text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#592d17]"
@@ -250,12 +250,15 @@ export default function RegisterForm() {
 
         {/* Botón de Registro */}
         <div>
-          <button
-            type="submit"
-            className="w-full mt-7 py-2 px-4 bg-[#592d17] text-white rounded-md font-medium hover:bg-[#452212] transition"
-          >
-            Registrarse
-          </button>
+            <button
+              type="submit"
+              className="w-full mt-7 py-2 px-4 bg-[#592d17] text-white rounded-md font-medium hover:bg-[#452212] transition"
+            >
+              <a href="/">
+                  Registrarse
+              </a>
+            </button>
+          
         </div>
       </motion.form>
     </div>
