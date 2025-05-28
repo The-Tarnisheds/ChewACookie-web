@@ -1,9 +1,7 @@
-import galleta from './galleta';
-import user from './user'
+import galleta from "./galleta";
+import user from "./user";
+import pago from "./pago";
 
-const routes = [
-  galleta,
-  user
-]
+const routes = [galleta, user, pago];
 
-export default routes
+export default routes;
