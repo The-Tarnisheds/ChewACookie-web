@@ -1,94 +1,108 @@
 import { useState } from "react";
-import CartAside from "../components/CartAside";
 import { motion } from "framer-motion";
+import { BookHeart, Target, Eye } from "lucide-react";
+import CartAside from "../components/CartAside";
 import WhatsAppButton from "../components/WhatsAppButton";
 import Footer from "../components/Footer";
 
 export default function AboutUs() {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  const fadeInStagger = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   };
 
+  const Section = ({
+    title,
+    icon,
+    children,
+  }: {
+    title: string;
+    icon: React.ReactNode;
+    children: React.ReactNode;
+  }) => (
+    <motion.div
+      className="relative bg-gradient-to-br from-[#f5e4cc] to-[#f9f0e6] shadow-xl rounded-2xl p-8 overflow-hidden hover:scale-[1.01] transition-transform duration-300"
+      variants={fadeInUp}
+    >
+      {/* Icono decorativo */}
+      <div className="absolute -top-5 -left-5 opacity-20 text-amber-800">
+        {icon}
+      </div>
+
+      <h2 className="flex items-center text-3xl md:text-4xl font-serif font-bold text-amber-800 mb-4 z-10 relative">
+        {icon}
+        <span className="ml-2">{title}</span>
+      </h2>
+
+      <div className="text-black text-lg md:text-xl font-sans space-y-4 relative z-10">
+        {children}
+      </div>
+    </motion.div>
+  );
+
   return (
-    <main className="bg-beige min-h-screen">
-      <section className="container mx-auto px-4 py-10 space-y-10">
-        {/* Imagen centrada */}
+    <main className="bg-beige min-h-screen flex flex-col">
+      <section className="container mx-auto px-4 py-12 flex-1 space-y-12">
         <motion.div
-          className="w-full flex justify-center"
+          className="flex justify-center"
           variants={fadeInUp}
           initial="hidden"
           animate="visible"
         >
           <img
             src="/assets/Logo.png"
-            alt="Ilustración relacionada"
-            className="rounded-xl w-full max-w-2xl h-auto object-contain"
+            alt="Logo Chew A Cookie"
+            className="rounded-2xl w-full max-w-2xl h-auto object-contain drop-shadow-md"
           />
         </motion.div>
 
-        {/* SOBRE NOSOTROS */}
+        {/* Secciones con animación escalonada */}
         <motion.div
-          className="bg-[#f5e4cc] shadow-lg rounded-xl p-8"
-          variants={fadeInUp}
+          variants={fadeInStagger}
           initial="hidden"
           animate="visible"
+          className="space-y-12"
         >
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-amber-800 mb-4 text-center md:text-left">
-            Sobre Nosotros
-          </h1>
-          <p className="text-black text-lg md:text-xl font-sans mb-4">
-            En <strong>Chew A Cookie</strong> creemos que cada galleta debe
-            contar una historia...
-          </p>
-          <p className="text-black text-lg md:text-xl font-sans">
-            Usamos solo ingredientes seleccionados de alta calidad...
-          </p>
-        </motion.div>
+          <Section title="Sobre Nosotros" icon={<BookHeart size={36} />}>
+            <p>
+              En <strong>Chew A Cookie</strong> creemos que cada galleta debe
+              contar una historia...
+            </p>
+            <p>Usamos solo ingredientes seleccionados de alta calidad...</p>
+          </Section>
 
-        {/* MISIÓN */}
-        <motion.div
-          className="bg-[#f5e4cc] shadow-lg rounded-xl p-8"
-          variants={fadeInUp}
-          initial="hidden"
-          animate="visible"
-        >
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-amber-800 mb-4 text-center md:text-left">
-            Misión
-          </h2>
-          <p className="text-black text-lg md:text-xl font-sans">
-            Nuestra misión es simple: llevar dulzura a tu vida...
-          </p>
-        </motion.div>
+          <Section title="Misión" icon={<Target size={36} />}>
+            <p>Nuestra misión es simple: llevar dulzura a tu vida...</p>
+          </Section>
 
-        {/* VISIÓN */}
-        <motion.div
-          className="bg-[#f5e4cc] shadow-lg rounded-xl p-8"
-          variants={fadeInUp}
-          initial="hidden"
-          animate="visible"
-        >
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-amber-800 mb-4 text-center md:text-left">
-            Visión
-          </h2>
-          <p className="text-black text-lg md:text-xl font-sans">
-            Ser reconocidos como la marca de galletas artesanales más querida...
-          </p>
+          <Section title="Visión" icon={<Eye size={36} />}>
+            <p>
+              Ser reconocidos como la marca de galletas artesanales más
+              querida...
+            </p>
+          </Section>
         </motion.div>
       </section>
 
-      {/* CartAside */}
+      {/* Componentes persistentes */}
       <CartAside isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <WhatsAppButton />
-      <div className="flex flex-col min-h-screen">
-        <Footer />
-      </div>
+      <Footer />
     </main>
   );
 }

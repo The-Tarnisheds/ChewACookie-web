@@ -19,6 +19,11 @@ interface CartContextType {
   cartItemsCount: number;
 }
 
+interface CartContextType {
+  // ... otras propiedades
+  clearCart: () => void;
+}
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 // Clave para localStorage
@@ -74,6 +79,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       )
     );
   };
+  const clearCart = () => {
+    setCart([]);
+  };
 
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
 
@@ -85,6 +93,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeFromCart,
         updateQuantity,
         cartItemsCount,
+        clearCart,
       }}
     >
       {children}
