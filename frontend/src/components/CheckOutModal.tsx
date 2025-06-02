@@ -9,7 +9,6 @@ interface CheckoutModalProps {
   onClose: () => void;
 }
 
-// Declaración para TypeScript del objeto MercadoPago
 declare global {
   interface Window {
     MercadoPago: any;
@@ -26,7 +25,6 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     0
   );
 
-  // Cargar SDK de MercadoPago
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://sdk.mercadopago.com/js/v2";
@@ -45,7 +43,6 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     setError(null);
 
     try {
-      // Preparamos los items para MercadoPago
       const itemsForMP = cart.map((item) => ({
         nombre: item.nombre,
         precio: item.precio,
@@ -75,23 +72,23 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
 
   const backdrop = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-    exit: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.3 } },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
   const modal = {
-    hidden: { opacity: 0, scale: 0.95, y: 30 },
+    hidden: { opacity: 0, y: 40, scale: 0.95 },
     visible: {
       opacity: 1,
-      scale: 1,
       y: 0,
-      transition: { duration: 0.3, ease: "easeOut" },
+      scale: 1,
+      transition: { duration: 0.4, ease: "easeOut" },
     },
     exit: {
       opacity: 0,
+      y: 20,
       scale: 0.95,
-      y: 30,
-      transition: { duration: 0.2, ease: "easeIn" },
+      transition: { duration: 0.3, ease: "easeIn" },
     },
   };
 
@@ -106,44 +103,42 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           variants={backdrop}
         >
           <motion.div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={onClose}
             variants={backdrop}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
           />
-
           <motion.div
-            className="relative bg-beige p-6 w-full max-w-3xl rounded-2xl shadow-2xl z-60"
+            className="relative bg-beige p-8 w-full max-w-3xl rounded-3xl shadow-2xl z-60"
             variants={modal}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
           >
-            <h2 className="text-2xl font-bold mb-4 text-center">
-              Resumen de tu compra
+            <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">
+              🧾 Resumen de tu compra
             </h2>
 
             {cart.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">
-                Tu carrito está vacío
+              <p className="text-center text-gray-500 py-10 text-lg">
+                Tu carrito está vacío.
               </p>
             ) : (
-              <div className="max-h-96 overflow-y-auto">
+              <div className="max-h-96 overflow-y-auto pr-2">
                 {cart.map((item) => (
-                  <div
+                  <motion.div
                     key={item.id_producto}
-                    className="flex items-center justify-between border-b py-4"
+                    className="flex items-center justify-between border-b py-4 px-2 transition-all duration-200 hover:bg-gray-50 rounded"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
                   >
                     <img
                       src={item.imagen}
                       alt={item.nombre}
-                      className="w-16 h-16 object-cover rounded"
+                      className="w-16 h-16 object-cover rounded-lg shadow"
                     />
                     <div className="flex-1 mx-4">
-                      <h3 className="font-medium">{item.nombre}</h3>
-                      <p className="text-gray-600">
+                      <h3 className="font-medium text-lg text-gray-700">
+                        {item.nombre}
+                      </h3>
+                      <p className="text-sm text-gray-500">
                         ${item.precio.toLocaleString()}
                       </p>
                     </div>
@@ -153,53 +148,54 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                           item.quantity > 1 &&
                           updateQuantity(item.id_producto, item.quantity - 1)
                         }
-                        className="p-1 text-gray-500 hover:text-gray-700"
+                        className="p-2 rounded-full hover:bg-gray-200 text-gray-600"
                       >
                         <FaMinus />
                       </button>
-                      <span className="w-6 text-center">{item.quantity}</span>
+                      <span className="w-6 text-center text-sm font-semibold">
+                        {item.quantity}
+                      </span>
                       <button
                         onClick={() =>
                           updateQuantity(item.id_producto, item.quantity + 1)
                         }
-                        className="p-1 text-gray-500 hover:text-gray-700"
+                        className="p-2 rounded-full hover:bg-gray-200 text-gray-600"
                       >
                         <FaPlus />
                       </button>
                       <button
                         onClick={() => removeFromCart(item.id_producto)}
-                        className="p-1 text-red-500 hover:text-red-700 ml-2"
+                        className="p-2 rounded-full hover:bg-red-100 text-red-500"
                       >
                         <FaTrash />
                       </button>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             )}
 
-            {/* Total y botones */}
-            <div className="mt-6 text-right">
-              <div className="text-xl font-bold mb-4">
+            <div className="mt-8 text-right">
+              <div className="text-2xl font-bold text-gray-800 mb-4">
                 Total: ${total.toLocaleString()}
               </div>
               <div className="flex justify-end gap-4">
                 <button
-                  className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded-lg"
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-5 rounded-lg transition-all duration-200"
                   onClick={onClose}
                 >
                   Cancelar
                 </button>
                 <button
-                  className="bg-redchew hover:bg-brownchew text-white py-2 px-6 rounded-lg disabled:opacity-50"
+                  className="bg-redchew hover:bg-brownchew text-white py-2 px-6 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handlePayment}
                   disabled={isProcessing || cart.length === 0}
                 >
-                  {isProcessing ? "Procesando..." : "Pagar"}
+                  {isProcessing ? "Procesando..." : "Pagar ahora"}
                 </button>
               </div>
               {error && (
-                <div className="mt-2 text-red-500 text-sm text-right">
+                <div className="mt-3 text-sm text-red-600 text-right">
                   {error}
                 </div>
               )}

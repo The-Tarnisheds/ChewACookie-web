@@ -20,6 +20,11 @@ interface CartContextType {
   clearCart: () => void;
 }
 
+interface CartContextType {
+  // ... otras propiedades
+  clearCart: () => void;
+}
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 // Clave para localStorage
@@ -74,6 +79,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
           : item
       )
     );
+  };
+  const clearCart = () => {
+    setCart([]);
   };
 
   const clearCart = () => {

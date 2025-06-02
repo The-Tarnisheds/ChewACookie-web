@@ -8,6 +8,9 @@ import LoginPage from "./pages/LoginPage";
 import AboutUs from "./pages/AboutUs";
 import Catalogo from "./pages/Catalogo";
 import RegisterPage from "./pages/Register";
+import PagoExitoso from "./pages/PagoExitoso";
+import PagoFallido from "./pages/PagoFallido";
+import PagoPendiente from "./pages/PagoPendiente";
 
 import PagoExitoso from "./pages/PagoExitoso";
 import PagoFallido from "./pages/PagoFallido";
@@ -29,6 +32,18 @@ export const router = createBrowserRouter([
       {
         path: "catalogo",
         element: <Catalogo />,
+      },
+      {
+        path: "pago-exitoso",
+        element: <PagoExitoso />,
+      },
+      {
+        path: "pago-fallido",
+        element: <PagoFallido />,
+      },
+      {
+        path: "pago-pendiente",
+        element: <PagoPendiente />,
       },
     ],
   },
