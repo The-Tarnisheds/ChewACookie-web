@@ -84,9 +84,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCart([]);
   };
 
-  const clearCart = () => {
-    setCart([]);
-  };
 
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
 

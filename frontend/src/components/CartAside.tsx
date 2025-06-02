@@ -177,7 +177,6 @@ export default function CartAside({ isOpen, onClose }: CartAsideProps) {
               <motion.button
                 onClick={() => {
                   setShowCheckout(true);
-                  onClose();
                 }}
                 disabled={cart.length === 0}
                 className="w-full py-3 rounded-xl bg-redchew text-white font-semibold hover:bg-brownchew transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
