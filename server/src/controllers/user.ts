@@ -24,6 +24,15 @@ const createUser = async (req: Request, res: Response): Promise<any> =>  {
             success: false
           });
         }
+
+        const user = await findUserByEmail(email);
+
+        if(user){
+          return res.status(HttpStatusCode.BAD_REQUEST).json({
+            message: 'Usuario ya existe',
+            success: false
+          });
+        }
       //Encriptar contraseñas
       const hashedPassword = await bcrypt.hash(pass, 10);
       const hashedPassword2 = await bcrypt.hash(pass2, 10);

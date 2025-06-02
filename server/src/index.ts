@@ -1,6 +1,6 @@
 import app from "./app";
 import dotenv from 'dotenv';
-import { sequelize } from "./config/db";
+import {sequelize} from "./config/db";
 
 dotenv.config();
 
@@ -8,7 +8,6 @@ const PORT = 3000;
 
 app.listen(PORT, () => {
   console.log(`Servidor en http://localhost:${PORT}`);
-  
   // Verificar la conexión a la bd
 sequelize
 .authenticate()

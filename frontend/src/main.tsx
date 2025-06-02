@@ -9,7 +9,11 @@ import AboutUs from "./pages/AboutUs";
 import Catalogo from "./pages/Catalogo";
 import RegisterPage from "./pages/Register";
 
-const router = createBrowserRouter([
+import PagoExitoso from "./pages/PagoExitoso";
+import PagoFallido from "./pages/PagoFallido";
+import PagoPendiente from "./pages/PagoPendiente";
+
+export const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
@@ -36,6 +40,18 @@ const router = createBrowserRouter([
     path: "register",
     element: <RegisterPage />,
   },
+  {
+        path: "pago-exitoso",
+        element: <PagoExitoso />,
+      },
+      {
+        path: "pago-fallido",
+        element: <PagoFallido />,
+      },
+      {
+        path: "pago-pendiente",
+        element: <PagoPendiente />,
+      },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

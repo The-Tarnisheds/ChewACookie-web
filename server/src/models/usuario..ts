@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db';  // Asegúrate de tener la conexión correcta con la base de datos
+import  {sequelize}  from '../config/db';  // Asegúrate de tener la conexión correcta con la base de datos
 import { PassThrough } from 'stream';
 
 const Region = sequelize.define('region', {

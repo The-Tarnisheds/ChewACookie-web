@@ -1,4 +1,3 @@
-import { sequelize } from "../config/db";
 import { Producto } from "../models/galleta";
 import { Request, Response } from "express";
 import HttpStatusCode from "../utils/http-status-code";

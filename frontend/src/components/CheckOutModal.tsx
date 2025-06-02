@@ -49,31 +49,21 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       const itemsForMP = cart.map((item) => ({
         nombre: item.nombre,
         precio: item.precio,
-        cantidad: item.quantity,
+        quantity: item.quantity,
       }));
 
+
       // Creamos la preferencia usando el servicio
-      const { id } = await createPreference(itemsForMP);
+      const { init_point  } = await createPreference(itemsForMP);
 
       // Redirigimos al checkout de MercadoPago
-      if (window.MercadoPago) {
-        const mp = new window.MercadoPago(
-          process.env.NEXT_PUBLIC_MP_PUBLIC_KEY || "TEST-xxxx",
-          {
-            locale: "es-CL",
-          }
-        );
-
-        mp.checkout({
-          preference: {
-            id: id,
-          },
-          autoOpen: true,
-        });
+      if (init_point) {
+        window.location.href = init_point; // 🔥 Esto te lleva directo al checkout
       } else {
-        throw new Error("El SDK de MercadoPago no se cargó correctamente");
+        throw new Error("No se recibió la URL de pago");
       }
     } catch (err) {
+      
       console.error("Error al procesar el pago:", err);
       setError(
         "Ocurrió un error al procesar el pago. Por favor, intenta nuevamente."

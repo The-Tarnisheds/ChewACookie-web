@@ -15,8 +15,10 @@ export const createPreference = async (items: any[]) => {
     if (!response.ok) {
       throw new Error("Error al crear la preferencia de pago");
     }
-
-    return await response.json();
+    const data = await response.json();
+    return {
+    init_point: data.init_point, // asegurate de que el backend devuelva esto
+  };
   } catch (error) {
     console.error("Error:", error);
     throw error;
