@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-if (!process.env.MP_ACCESS_TOKEN) {
+if (!process.env.MP_TEST_TOKEN) {
   throw new Error("Missing MP_ACCESS_TOKEN environment variable");
 }
 
 // Configuración para MercadoPago v2
 const client = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN,
+  accessToken: process.env.MP_TEST_TOKEN,
 });
 
 // En v2.7.0 se usa Preference en lugar de Preferences

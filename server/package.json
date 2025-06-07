@@ -18,7 +18,8 @@
     "mercadopago": "^2.7.0",
     "pg": "^8.14.1",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "tedious": "^18.6.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import {sequelize} from '../config/db';  // Asegúrate de tener la conexión correcta con la base de datos
+import sequelize from '../config/db';  // Asegúrate de tener la conexión correcta con la base de datos
 
 // Definición del modelo Categoria
 const Categoria = sequelize.define('Categoria', {
@@ -13,7 +13,7 @@ const Categoria = sequelize.define('Categoria', {
         allowNull: false,
     }
 }, {
-    schema: 'chew',
+    schema: 'dbo',
     tableName: 'categoria',
     timestamps: false,
 });
@@ -54,7 +54,7 @@ const Producto = sequelize.define('Producto', {
         allowNull: false,
     }
 }, {
-    schema: 'chew',
+    schema: 'dbo',
     tableName: 'producto',
     timestamps: false,
 });

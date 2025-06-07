@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
-import  {sequelize}  from '../config/db';  // Asegúrate de tener la conexión correcta con la base de datos
-import { PassThrough } from 'stream';
+import sequelize from '../config/db';
 
 const Region = sequelize.define('region', {
     id_region:{
@@ -14,7 +13,7 @@ const Region = sequelize.define('region', {
         allowNull: false,
     },
 }, {
-    schema: 'chew',
+    schema: 'dbo',
     tableName: 'region',
     timestamps: false,
 })
@@ -30,13 +29,19 @@ const Comuna = sequelize.define('comuna', {
         type: DataTypes.STRING(100),
         allowNull: false,
     },
+    id_region:{
+        type: DataTypes.INTEGER,
+        allowNull:false,
+        references:{
+            model: Region,
+            key: 'id_region'
+          }
+    },
 }, {
-    schema: 'chew',
+    schema: 'dbo',
     tableName: 'comuna',
     timestamps: false,
 })
-
-
 
 const Usuario = sequelize.define('usuario', {
     id_usuario:{
@@ -61,6 +66,10 @@ const Usuario = sequelize.define('usuario', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    pass:{
+        type: DataTypes.STRING(100),
+        allowNull: false,
+    },
     id_region:{
         type: DataTypes.INTEGER,
         allowNull:false,
@@ -77,12 +86,8 @@ const Usuario = sequelize.define('usuario', {
             key: 'id_comuna'
           }
     },
-    pass:{
-        type: DataTypes.STRING(100),
-        allowNull: false,
-    }
 }, {
-    schema: 'chew',
+    schema: 'dbo',
     tableName: 'usuario',
     timestamps: false,
 });
@@ -126,7 +131,7 @@ const Direccion = sequelize.define('direccion', {
         }
     },
 }, {
-    schema: 'chew',
+    schema: 'dbo',
     tableName: 'direccion',
     timestamps: false,
 });
