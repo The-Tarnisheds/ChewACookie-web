@@ -8,15 +8,12 @@ export default function PagoExitoso() {
 
   // Obtener parámetros de MercadoPago
   const paymentId = searchParams.get("payment_id");
-  const status = searchParams.get("status");
 
   // Limpiar carrito al montar el componente
   useEffect(() => {
     clearCart();
 
-    // Aquí podrías enviar una solicitud a tu backend para verificar el pago
-    console.log("Pago exitoso. ID:", paymentId, "Status:", status);
-  }, [clearCart]);
+  }, []);
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md text-center">

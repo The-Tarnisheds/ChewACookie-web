@@ -9,11 +9,11 @@ export default function Producto({ product }: Props) {
 
   return (
     <div className="flex-shrink-0 w-[300px] bg-white rounded-xl shadow-md p-6">
-      <img
-        src={product.imagen}
-        alt={product.nombre}
-        className="w-full h-48 object-contain mb-4"
-      />
+        <img
+          src={product.imagen}
+          alt={product.nombre}
+          className="w-full h-48 mb-4 object-contain shadow-md rounded-lg"
+        />
       <h3 className="text-2xl font-bold text-center mb-2">{product.nombre}</h3>
       <p className="text-xl font-bold text-center text-amber-800 mb-4">
         ${product.precio.toLocaleString()}

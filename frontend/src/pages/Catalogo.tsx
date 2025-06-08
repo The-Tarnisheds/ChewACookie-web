@@ -22,13 +22,11 @@ export default function Catalogo() {
       <section className="bg-[#f2e1c2] max-w-5xl mx-auto rounded-xl p-6 shadow-lg">
         <CookieGrid />
       </section>
+      <Footer />
 
       <CartAside isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       <WhatsAppButton />
-      <div className="flex flex-col min-h-screen">
-        <Footer />
-      </div>
     </main>
   );
 }

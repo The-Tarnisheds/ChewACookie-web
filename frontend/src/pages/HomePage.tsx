@@ -8,11 +8,11 @@ export default function HomePage() {
       {/* Sección principal */}
       <header className="container mx-auto px-4 pt-0">
         <div className="flex flex-col md:flex-row items-center justify-between gap-2">
-          <div className="hidden md:block w-[35%] max-w-[400px]">
+          <div className="hidden -ml-8 md:block  max-w-[400px]">
             <img
               src="assets/cookieHand.png"
               alt="Mano con galleta"
-              className="w-full h-auto max-h-[70vh] object-contain"
+              className="w-full h-auto  object-contain"
             />
           </div>
 
@@ -43,9 +43,7 @@ export default function HomePage() {
       </header>
       <CookieList />
       <WhatsAppButton />
-      <div className="flex flex-col min-h-screen">
-        <Footer />
-      </div>
+      <Footer />
     </main>
   );
 }

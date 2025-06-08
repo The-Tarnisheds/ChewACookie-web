@@ -11,27 +11,31 @@ export const createPreference = async (req: Request, res: Response) => {
 
     const preference = {
       items: items.map((item) => ({
-        id: item.id_producto, // Usamos el id_producto como ID
+        id: item.id_producto,
         title: item.nombre,
         unit_price: Number(item.precio),
-        quantity: item.quantity, // Asegúrate que quantity viene del carrito
+        quantity: item.quantity,
         currency_id: "CLP",
         description: item.descripcion || "",
         picture_url: item.imagen || undefined,
       })),
-
-      // back_urls: {
-      //   success: `http://localhost:5173/pago-exitoso`,
-      //   failure: `${process.env.FRONTEND_URL}pago-fallido`,
-      //   pending: `${process.env.FRONTEND_URL}pago-pendiente`,
-      // },
-      // auto_return: "approved",
-      // metadata: {
-      //   store: "ChewACookie",
-      // },
+      back_urls: {
+        success: `${process.env.FRONTEND_URL}pago-exitoso`,
+        failure: `${process.env.FRONTEND_URL}pago-fallido`,
+        pending: `${process.env.FRONTEND_URL}pago-pendiente`,
+      },
+      auto_return: "approved",
+      
     };
+    if (!preference.back_urls?.success) {
+      throw new Error("Falta back_urls.success, y es obligatorio para auto_return");
+    }
 
-    console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
+    console.log("🔎 URLs:", {
+  success: `${process.env.FRONTEND_URL}pago-exitoso`,
+  failure: `${process.env.FRONTEND_URL}pago-fallido`,
+  pending: `${process.env.FRONTEND_URL}pago-pendiente`,
+});
     const response = await preferences.create({ body: preference });
     return res.status(200).json({ init_point: response.init_point });
   } catch (error: any) {

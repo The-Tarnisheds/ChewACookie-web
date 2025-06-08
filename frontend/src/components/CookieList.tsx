@@ -34,7 +34,7 @@ export default function CookieList() {
         {/* Flechas de navegación */}
         <button
           onClick={() => scroll(-300)}
-          className="hidden md:block absolute left-[-40px] top-1/2 transform -translate-y-1/2 bg-redchew text-white p-3 rounded-full hover:bg-brownchew z-10"
+          className="hidden md:block absolute left-[-20px] top-1/2 transform -translate-y-1/2 bg-redchew text-white p-3 rounded-full hover:bg-brownchew z-10"
         >
           <FaArrowLeft size={24} />
         </button>
@@ -51,7 +51,7 @@ export default function CookieList() {
 
         <button
           onClick={() => scroll(300)}
-          className="hidden md:block absolute right-[-40px] top-1/2 transform -translate-y-1/2 bg-redchew text-white p-3 rounded-full hover:bg-brownchew z-10"
+          className="hidden md:block absolute right-[-20px] top-1/2 transform -translate-y-1/2 bg-redchew text-white p-3 rounded-full hover:bg-brownchew z-10"
         >
           <FaArrowRight size={24} />
         </button>

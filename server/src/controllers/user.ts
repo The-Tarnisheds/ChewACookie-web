@@ -9,6 +9,14 @@ const findUserByEmail = async (email: string) => {
   return await Usuario.findOne({ where: { email } });
 };
 
+function toTitleCase(str: string) {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 const createUser = async (req: Request, res: Response): Promise<any> => {
   const {
     nombre,
@@ -104,7 +112,6 @@ const getLocations = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-// Controlador para el Login.
 const loginUser = async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
   try {
@@ -117,47 +124,51 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
       });
     }
 
-    const user = await Usuario.findOne({
-      where: { email },
-      include: [
-        {
-          model: Direccion,
-          include: [
-            {
-              model: Comuna,
-              include: [Region],
-            },
-          ],
-        },
-      ],
-    });
+    const user = await findUserByEmail(email);
 
     if (!user) {
-      console.log("Usuario no encontrado:", email);
       return res.status(HttpStatusCode.UNAUTHORIZED).json({
         success: false,
-        message: "Credenciales inválidas",
+        message: "Usuario no encontrado: " + email,
       });
     }
-
-    console.log("Usuario encontrado:", user.get("email"));
 
     const isMatch = await bcrypt.compare(password, user.get("pass") as string);
     if (!isMatch) {
-      console.log("Contraseña no coincide para:", email);
       return res.status(HttpStatusCode.UNAUTHORIZED).json({
         success: false,
-        message: "Credenciales inválidas",
+        message: "Contraseña no coincide para:" + email,
       });
     }
 
-    const userData = user.get({ plain: true });
-    delete userData.pass;
+    const address = await Direccion.findOne({
+      where: {
+      id_usuario: user.get("id_usuario")},
+    });
 
-    console.log("Login exitoso para:", email);
+    const region = await Region.findOne({
+      where: {id_region: address?.get("id_region")},
+    });
+    const comuna = await Comuna.findOne({
+      where: {id_comuna: address?.get("id_comuna")},
+    });
+
+    const userData = {
+      nombre: toTitleCase(user.get("nombre") as string),
+      apellidos: toTitleCase(user.get("apellidos") as string),
+      email: user.get("email"),
+      telefono: user.get("telefono"),
+      direccion: {
+        calle: address?.get("calle"),
+        numero: address?.get("numero"),
+        comuna: comuna?.get("nombre_comuna"),
+        region: region?.get("nombre_region"),
+      },
+    }
+
     res.status(HttpStatusCode.OK).json({
       success: true,
-      message: "Inicio de sesión exitoso",
+      message: "Login exitoso para:" + email,
       user: userData,
     });
   } catch (error) {

@@ -1,8 +1,18 @@
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useCart } from "../components/CartContext";
 
 export default function PagoPendiente() {
   const [searchParams] = useSearchParams();
   const paymentId = searchParams.get("payment_id");
+  const { clearCart } = useCart();
+  
+
+  // Limpiar carrito al montar el componente
+    useEffect(() => {
+      clearCart();
+  
+    }, []);
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md text-center">

@@ -30,12 +30,14 @@ export default function Header() {
       }
     };
 
+    
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  
+  const firstName = user?.nombre?.split(" ")[0] || "Usuario";
   const handleNavigation = (path: string) => {
     setIsUserDropdownOpen(false);
     navigate(path);
@@ -115,7 +117,7 @@ export default function Header() {
                   <FaChevronDown className="w-4 h-4" />
                 )}
                 {isAuthenticated && (
-                  <span className="hidden md:inline ml-1">{user.nombre}</span>
+                  <span className="hidden md:inline ml-1">{firstName}</span>
                 )}
               </motion.button>
               {/* Logica para el perfil en caso de estar logueado */}

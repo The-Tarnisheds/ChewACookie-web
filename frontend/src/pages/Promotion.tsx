@@ -205,14 +205,11 @@ export default function Promotions() {
           ))}
         </motion.div>
       </section>
+      <Footer />
 
       <CartAside isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       <WhatsAppButton />
-
-      <div className="flex flex-col min-h-screen">
-        <Footer />
-      </div>
     </main>
   );
 }
