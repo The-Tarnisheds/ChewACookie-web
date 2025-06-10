@@ -15,9 +15,20 @@ app.use((req, res, next) => {
   next();
 });
 
+const allowedOrigins = [
+  "https://rt2c7pr1-5173.brs.devtunnels.ms",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // o el puerto que uses para React
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
