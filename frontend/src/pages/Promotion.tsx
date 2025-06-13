@@ -1,213 +1,294 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-import CartAside from "../components/CartAside";
+import { motion } from "framer-motion";
 import WhatsAppButton from "../components/WhatsAppButton";
 import Footer from "../components/Footer";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import ChewPoints from "../../assets/chewpoints.png";
 
 export default function Promotions() {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [currentPromo, setCurrentPromo] = useState(0);
-
-  // EJEMPLO DE PROMOCIONES
-  const promotions = [
+  // Productos canjeables
+  const redeemableProducts = [
     {
-      title: "2x1 en Galletas Clásicas",
-      description:
-        "Lleva dos por el precio de una en nuestra selección de galletas tradicionales",
-      discount: "50%",
-      color: "bg-[#e8c39e]",
+      points: 30,
+      title: "1 Cookie a elección",
+      description: "Elige tu galleta favorita",
+      color: "bg-[#e2c89f]",
     },
     {
-      title: "Combo Familiar",
-      description:
-        "Paquete especial con 24 galletas surtidas + 2 bebidas gratis",
-      discount: "30%",
-      color: "bg-[#d4a76a]",
+      points: 40,
+      title: "3 Cookies + Salsas",
+      description: "Variedad de sabores con dips especiales",
+      color: "bg-[#f4e9d7]",
     },
     {
-      title: "Nuevos Sabores",
-      description:
-        "Prueba nuestros nuevos sabores con 20% de descuento en tu primera compra",
-      discount: "20%",
-      color: "bg-[#b88a4a]",
+      points: 90,
+      title: "1 CookieBox",
+      description: "Nuestra selección premium",
+      color: "bg-[#592d17] text-white",
     },
   ];
 
-  const nextPromo = () => {
-    setCurrentPromo((prev) => (prev === promotions.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevPromo = () => {
-    setCurrentPromo((prev) => (prev === 0 ? promotions.length - 1 : prev - 1));
-  };
-
   return (
-    <main className="relative bg-beigechew min-h-screen">
+    <main className="relative bg-[#faf7ee] min-h-screen">
       {/* Header */}
-      <header className="container mx-auto px-4 py-10">
+      <header className="container mx-auto px-4 py-12">
         <motion.h1
-          className="text-center text-5xl font-bold text-amber-800 mb-4"
+          className="text-center text-5xl font-bold text-[#592d17] mb-4"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Promociones Especiales
+          Chew Points
         </motion.h1>
         <motion.p
-          className="text-center text-lg text-gray-700 italic mb-6"
+          className="text-center text-lg text-[#af040d] italic mb-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          Aprovecha nuestras ofertas exclusivas y disfruta de los mejores
-          sabores 🍪✨
+          ¡Canjea productos gratis con tus puntos acumulados! 🍪✨
         </motion.p>
       </header>
 
-      {/* Carrusel de Promociones */}
-      <section className="max-w-4xl mx-auto mb-16">
-        <motion.div
-          className="relative h-64 rounded-2xl overflow-hidden shadow-xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentPromo}
-              className={`${promotions[currentPromo].color} h-full flex flex-col justify-center items-center p-8 text-center`}
-              initial={{ x: 300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -300, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 100 }}
+      {/* Banner 1: Todo sobre Chew Points */}
+      <motion.section
+        className="max-w-6xl mx-auto mb-16 px-6"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="bg-gradient-to-r from-[#f4e9d7] to-[#e2c89f] rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
+          <motion.div
+            className="md:w-1/2 p-8 flex flex-col justify-center"
+            initial={{ x: -50 }}
+            whileInView={{ x: 0 }}
+            transition={{ type: "spring" }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold text-[#592d17] mb-4">
+              ¡Canjea productos GRATIS!
+            </h2>
+            <p className="text-lg text-[#592d17] mb-6">
+              Con Chew Points, cada compra te acerca a deliciosas recompensas.
+              Acumula puntos y redímelos por productos exclusivos.
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-[#af040d] text-white px-6 py-3 rounded-full font-bold self-start"
             >
-              <motion.span
-                className="text-6xl font-bold text-amber-900 mb-2"
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                {promotions[currentPromo].discount}
-              </motion.span>
-              <motion.h2
-                className="text-3xl font-bold text-amber-900 mb-2"
-                initial={{ y: 20 }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                {promotions[currentPromo].title}
-              </motion.h2>
-              <motion.p
-                className="text-lg text-amber-900 max-w-md"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                {promotions[currentPromo].description}
-              </motion.p>
-            </motion.div>
-          </AnimatePresence>
-
-          <button
-            onClick={prevPromo}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-amber-800 bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-all"
-          >
-            <FaChevronLeft size={24} />
-          </button>
-          <button
-            onClick={nextPromo}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-amber-800 bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-all"
-          >
-            <FaChevronRight size={24} />
-          </button>
-
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-            {promotions.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentPromo(index)}
-                className={`w-3 h-3 rounded-full ${
-                  currentPromo === index ? "bg-amber-800" : "bg-amber-300"
-                }`}
-              />
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Productos en Oferta */}
-      <section className="bg-[#f2e1c2] max-w-5xl mx-auto rounded-xl p-6 shadow-lg mb-16">
-        <motion.h2
-          className="text-3xl font-bold text-amber-800 mb-6 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          Productos Destacados
-        </motion.h2>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        ></motion.div>
-      </section>
-
-      {/* Ofertas Relámpago */}
-      <section className="max-w-5xl mx-auto mb-16">
-        <motion.h2
-          className="text-3xl font-bold text-amber-800 mb-6 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          Ofertas Relámpago
-        </motion.h2>
-
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ staggerChildren: 0.1 }}
-          viewport={{ once: true }}
-        >
-          {[1, 2, 3].map((item) => (
+              Ver mis puntos
+            </motion.button>
+          </motion.div>
+          <div className="md:w-1/2 bg-gray-200 flex items-center justify-center">
             <motion.div
-              key={item}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+              className="w-full h-64 md:h-full flex items-center justify-center bg-[#ffdede]"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <span className="text-[#592d17]">
+                <img src={ChewPoints} alt="" />
+              </span>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Banner 2: Cómo acumular puntos */}
+      <motion.section
+        className="max-w-6xl mx-auto mb-16 px-6"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="bg-[#f4e9d7] rounded-2xl shadow-lg p-8">
+          <motion.h2
+            className="text-3xl font-bold text-[#592d17] mb-6 text-center"
+            initial={{ y: 20 }}
+            whileInView={{ y: 0 }}
+            transition={{ type: "spring" }}
+            viewport={{ once: true }}
+          >
+            ¿Cómo acumular ChewPoints?
+          </motion.h2>
+
+          <motion.div
+            className="flex flex-col md:flex-row items-center gap-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <motion.div
+              className="bg-white p-6 rounded-xl shadow-md flex-1 text-center"
               whileHover={{ y: -5 }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
             >
-              <div className="h-48 bg-amber-200 flex items-center justify-center">
-                <span className="text-amber-800">
-                  Imagen del Producto {item}
-                </span>
-              </div>
-              <div className="p-4">
-                <h3 className="font-bold text-lg text-amber-800 mb-1">
-                  Producto {item}
-                </h3>
-                <div className="flex justify-between items-center">
-                  <span className="text-amber-600 font-bold">$1.500</span>
-                  <span className="bg-amber-800 text-white text-sm px-2 py-1 rounded">
-                    -30%
-                  </span>
-                </div>
-              </div>
+              <div className="text-6xl text-[#af040d] mb-4">10</div>
+              <h3 className="text-xl font-bold text-[#592d17] mb-2">
+                ChewPoints
+              </h3>
+              <p className="text-[#592d17]">
+                por cada compra superior a $10.000 en nuestra tienda online
+              </p>
             </motion.div>
-          ))}
-        </motion.div>
-      </section>
-      <Footer />
 
-      <CartAside isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+            <motion.div
+              className="bg-white p-6 rounded-xl shadow-md flex-1 text-center"
+              whileHover={{ y: -5 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <div className="text-6xl text-[#af040d] mb-4">5</div>
+              <h3 className="text-xl font-bold text-[#592d17] mb-2">
+                ChewPoints
+              </h3>
+              <p className="text-[#592d17]">
+                por cada reseña con foto de tu compra
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="bg-white p-6 rounded-xl shadow-md flex-1 text-center"
+              whileHover={{ y: -5 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="text-6xl text-[#af040d] mb-4">2</div>
+              <h3 className="text-xl font-bold text-[#592d17] mb-2">
+                ChewPoints
+              </h3>
+              <p className="text-[#592d17]">
+                por cada cumpleaños en nuestro sistema
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Banner 3: Cómo canjear puntos */}
+      <motion.section
+        className="max-w-6xl mx-auto mb-16 px-6"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="bg-[#e2c89f] rounded-2xl shadow-lg p-8">
+          <motion.h2
+            className="text-3xl font-bold text-[#592d17] mb-8 text-center"
+            initial={{ y: 20 }}
+            whileInView={{ y: 0 }}
+            transition={{ type: "spring" }}
+            viewport={{ once: true }}
+          >
+            ¿Cómo canjear ChewPoints?
+          </motion.h2>
+
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.2 }}
+            viewport={{ once: true }}
+          >
+            {[
+              {
+                step: "1",
+                title: "Arma tu carrito",
+                description: "Incluye productos canjeables con puntos",
+              },
+              {
+                step: "2",
+                title: "Selecciona 'Usar puntos'",
+                description: "Al pagar, elige cuántos puntos aplicar",
+              },
+              {
+                step: "3",
+                title: "Disfruta tu recompensa",
+                description: "Recibe tu pedido con productos gratis",
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                className="bg-white p-6 rounded-xl shadow-md"
+                whileHover={{ scale: 1.03 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div className="text-4xl font-bold text-[#af040d] mb-4">
+                  {item.step}
+                </div>
+                <h3 className="text-xl font-bold text-[#592d17] mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-[#592d17]">{item.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Banner 4: Productos canjeables */}
+      <motion.section
+        className="max-w-6xl mx-auto mb-16 px-6"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <motion.h2
+            className="text-3xl font-bold text-[#592d17] mb-6 text-center py-6 bg-[#ffdede]"
+            initial={{ y: 20 }}
+            whileInView={{ y: 0 }}
+            transition={{ type: "spring" }}
+            viewport={{ once: true }}
+          >
+            ¡Elige 1 de estos productos GRATIS!
+          </motion.h2>
+
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 divide-x divide-[#f4e9d7]"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.2 }}
+            viewport={{ once: true }}
+          >
+            {redeemableProducts.map((product, index) => (
+              <motion.div
+                key={index}
+                className={`${product.color} p-8 text-center flex flex-col items-center`}
+                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div className="text-4xl font-bold mb-2">
+                  {product.points} CP
+                </div>
+                <h3 className="text-2xl font-bold mb-4">{product.title}</h3>
+                <p className="mb-6">{product.description}</p>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-[#af040d] text-white px-6 py-2 rounded-full font-bold"
+                >
+                  Canjear ahora
+                </motion.button>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      <Footer />
 
       <WhatsAppButton />
     </main>
