@@ -26,7 +26,7 @@ export default function CookieList() {
 
   return (
     <section className="relative container mx-auto px-4 py-8">
-      <h2 className="text-center text-5xl font-bold text-amber-800 mb-4">
+      <h2 style={{ fontFamily: 'Poppins' }} className="text-center text-5xl font-bold text-amber-800 mb-4">
         Nuestro Menú
       </h2>
 

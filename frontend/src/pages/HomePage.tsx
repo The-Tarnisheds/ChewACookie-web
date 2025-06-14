@@ -18,15 +18,15 @@ export default function HomePage() {
 
           <div className="w-full md:w-[30%] text-center md:text-left">
             <h1 className="font-serif text-6xl font-bold">
-              <span className="text-black">Elige tu </span>
+              <span  className="text-black">Elige tu </span>
               <br />
               <span className="text-amber-800">Cookie Mood</span>
             </h1>
             <div className="mt-1 space-y-1">
-              <p className="font-sans text-xl md:text-2xl text-black italic">
+              <p style={{ fontFamily: 'Poppins' }} className="font-sans text-xl md:text-2xl text-black italic">
                 Amor en cada mordida
               </p>
-              <p className="font-sans text-lg md:text-xl text-black">
+              <p style={{ fontFamily: 'Poppins' }} className="font-sans text-lg md:text-xl text-black">
                 Hechas con ingredientes de calidad
               </p>
             </div>

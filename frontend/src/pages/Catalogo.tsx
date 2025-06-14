@@ -11,7 +11,7 @@ export default function Catalogo() {
     <main className="relative bg-beigechew min-h-screen">
       {/* Header */}
       <header className="container mx-auto px-4 py-10">
-        <h1 className="text-center text-5xl font-bold text-amber-800 mb-4">
+        <h1 style={{ fontFamily: 'Principal' }} className="text-center text-5xl font-bold text-amber-800 mb-4">
           Catálogo de Galletas
         </h1>
         <p className="text-center text-lg text-gray-700 italic mb-6">

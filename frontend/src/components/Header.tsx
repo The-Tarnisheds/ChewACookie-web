@@ -75,6 +75,7 @@ export default function Header() {
               { to: "/aboutus", label: "Nosotros" },
             ].map(({ to, label }) => (
               <Link
+              style={{ fontFamily: 'Poppins' }}
                 key={to}
                 to={to}
                 className="bg-redchew text-whitechew font-medium rounded-3xl px-4 py-2 hover:bg-brownchew transition-colors shadow-sm"

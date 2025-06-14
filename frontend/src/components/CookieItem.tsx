@@ -14,11 +14,11 @@ export default function Producto({ product }: Props) {
           alt={product.nombre}
           className="w-full h-48 mb-4 object-contain shadow-md rounded-lg"
         />
-      <h3 className="text-2xl font-bold text-center mb-2">{product.nombre}</h3>
+      <h3 style={{ fontFamily: 'Poppins' }}  className="text-2xl font-bold text-center mb-2">{product.nombre}</h3>
       <p className="text-xl font-bold text-center text-amber-800 mb-4">
         ${product.precio.toLocaleString()}
       </p>
-      <button
+      <button style={{ fontFamily: 'Poppins' }}
         onClick={() => addToCart(product)} // Función del Context
         className="w-full bg-redchew text-white py-2 rounded-xl hover:bg-brownchew transition-colors"
       >
