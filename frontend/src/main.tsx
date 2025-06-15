@@ -13,6 +13,7 @@ import PagoFallido from "./pages/PagoFallido";
 import PagoPendiente from "./pages/PagoPendiente";
 import { AuthProvider } from "./components/AuthContext";
 import Promotions from "./pages/Promotion";
+import Profile from "./pages/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <RegisterPage />,
+      },
+      {
+        path: "perfil",
+        element: <Profile />,
       },
       {
         path: "pago-exitoso",
