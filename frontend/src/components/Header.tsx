@@ -29,13 +29,23 @@ export default function Header() {
         setIsUserDropdownOpen(false);
       }
     };
-
     
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    let isAdmin = false;
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      if (parsedUser.isAdmin) {
+        isAdmin=true
+      }
+    }
+  });
   
   const firstName = user?.nombre?.split(" ")[0] || "Usuario";
   const handleNavigation = (path: string) => {
@@ -140,6 +150,14 @@ export default function Header() {
                           >
                             Mi perfil
                           </button>
+                          {user?.isAdmin && (
+                            <button
+                              onClick={() => handleNavigation("/admin-dashboard")}
+                              className="w-full text-left px-4 py-2 text-brownchew hover:bg-beige transition-colors"
+                            >
+                              Panel de administración
+                            </button>
+                          )}
                           <button
                             onClick={() => {
                               logout();

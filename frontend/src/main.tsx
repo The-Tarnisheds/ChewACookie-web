@@ -14,6 +14,7 @@ import PagoPendiente from "./pages/PagoPendiente";
 import { AuthProvider } from "./components/AuthContext";
 import Promotions from "./pages/Promotion";
 import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: "pago-pendiente",
         element: <PagoPendiente />,
+      },
+      {
+        path: "admin-dashboard",
+        element: <Dashboard />,
       },
     ],
   },
