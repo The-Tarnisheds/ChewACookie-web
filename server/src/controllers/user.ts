@@ -4,6 +4,9 @@ import HttpStatusCode from "../utils/http-status-code";
 import { errorHandler, CustomError } from "../utils/error_handler";
 import { Comuna, Direccion, Region, Usuario } from "../models/usuario.";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { Admin } from "../models/usuario.";
+import { AuthenticatedRequest } from "../middlewares/authMiddleware";
 
 const findUserByEmail = async (email: string) => {
   return await Usuario.findOne({ where: { email } });
@@ -129,7 +132,7 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
     if (!user) {
       return res.status(HttpStatusCode.UNAUTHORIZED).json({
         success: false,
-        message: "Usuario no encontrado: " + email,
+        message: "Usuario o contraseña incorrectas ",
       });
     }
 
@@ -137,7 +140,7 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
     if (!isMatch) {
       return res.status(HttpStatusCode.UNAUTHORIZED).json({
         success: false,
-        message: "Contraseña no coincide para:" + email,
+        message: "Usuario o contraseña incorrectas"
       });
     }
 
@@ -153,6 +156,9 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
       where: {id_comuna: address?.get("id_comuna")},
     });
 
+    const isAdmin = await Admin.findOne({ where: { email } });
+
+
     const userData = {
       nombre: toTitleCase(user.get("nombre") as string),
       apellidos: toTitleCase(user.get("apellidos") as string),
@@ -164,12 +170,22 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
         comuna: comuna?.get("nombre_comuna"),
         region: region?.get("nombre_region"),
       },
+      isAdmin: !!isAdmin,
     }
+
+    const tokenPayload = {
+      id: user.get("id_usuario"),
+      isAdmin: Boolean(isAdmin),
+    };
+
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET as string, { expiresIn: "2h" });
+
 
     res.status(HttpStatusCode.OK).json({
       success: true,
       message: "Login exitoso para:" + email,
       user: userData,
+      token,
     });
   } catch (error) {
     console.error("Error en login:", error);
@@ -180,4 +196,46 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export { createUser, getLocations, loginUser };
+const editUserPersonalData = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
+  const { nombre, apellidos, telefono, newEmail } = req.body;
+
+  const userId = req.user?.id;
+  if (!userId) {
+    return res.status(401).json({ success: false, message: "No autorizado" });
+  }
+
+  try {
+    if (!nombre || !apellidos || !telefono || !newEmail) {
+      return res.status(HttpStatusCode.BAD_REQUEST).json({
+        message: "Todos los datos son obligatorios",
+        success: false,
+      });
+    }
+
+    const user = await Usuario.findOne({ where: { id_usuario: userId } }); 
+
+    if (!user) {
+      return res.status(HttpStatusCode.NOT_FOUND).json({
+        message: "Usuario no encontrado",
+        success: false,
+      });
+    }
+
+    user.update({
+      nombre,
+      apellidos,
+      email: newEmail,
+      telefono,
+    });
+
+    await user.save();
+
+    res.status(HttpStatusCode.OK).json({
+      mensaje: "Usuario actualizado exitosamente",
+      usuario: user,
+    });
+  } catch (error) {
+    errorHandler(error as CustomError | undefined, req, res);
+  }
+};
+export { createUser, getLocations, loginUser, editUserPersonalData };

@@ -136,6 +136,25 @@ const Direccion = sequelize.define('direccion', {
     timestamps: false,
 });
 
+const Admin = sequelize.define('admin', {
+    id_admin:{
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull:false
+    },
+    nombre:{
+        type: DataTypes.STRING(100)
+    },
+    email:{
+        type: DataTypes.STRING(100)
+    }
+    },{
+        schema: 'dbo',
+        tableName: 'admin',
+        timestamps: false,
+    });
+
 
 Region.hasMany(Comuna, {
     foreignKey: 'id_region'
@@ -166,5 +185,6 @@ export {
     Usuario,
     Region,
     Comuna,
-    Direccion
+    Direccion,
+    Admin
  };
