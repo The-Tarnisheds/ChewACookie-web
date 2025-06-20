@@ -11,6 +11,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
+  updateUser: (userData: any) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,6 +26,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
+  // Nueva función para actualizar el usuario
+  const updateUser = (userData: any) => {
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+  };
 
   const login = async (email: string, password: string) => {
     try {
@@ -55,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(data.message || "Error en las credenciales");
       }
 
-      setUser(data.user);
+      updateUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
     } catch (error) {
       console.error("Error completo en login:", error);
@@ -71,7 +78,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isAuthenticated = !!user;
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, isAuthenticated, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

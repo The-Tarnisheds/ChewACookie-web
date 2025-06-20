@@ -4,7 +4,6 @@ import {
   FaUser,
   FaPhone,
   FaEnvelope,
-  FaMapMarkerAlt,
   FaEdit,
   FaTrash,
   FaPlus,
@@ -12,9 +11,14 @@ import {
 import { useAuth } from "../components/AuthContext";
 import WhatsAppButton from "../components/WhatsAppButton";
 import Footer from "../components/Footer";
+import { EditableField } from "../components/EditableField";
+
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { EditableAddress } from "../components/EditableAddress";
 
 export default function Profile() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
   const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
@@ -22,6 +26,87 @@ export default function Profile() {
       setUserData(user);
     }
   }, [user]);
+
+  const handleUpdateUser = async (
+    field: string,
+    value: string
+  ): Promise<void> => {
+    try {
+      const token = localStorage.getItem("token");
+
+      console.log("Contenido de localStorage:", {
+        token: localStorage.getItem("token"),
+        user: localStorage.getItem("user"),
+      });
+
+      if (!token) {
+        throw new Error(
+          "No se encontró el token de autenticación. Por favor, vuelve a iniciar sesión."
+        );
+      }
+
+      const updateData = {
+        nombre:
+          field === "nombreCompleto" ? value.split(" ")[0] : userData.nombre,
+        apellidos:
+          field === "nombreCompleto"
+            ? value.split(" ").slice(1).join(" ")
+            : userData.apellidos,
+        telefono: field === "telefono" ? value : userData.telefono,
+        newEmail: field === "email" ? value : userData.email,
+      };
+
+      const response = await axios.put(
+        "http://localhost:3000/api/users/edit-user",
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${token.trim()}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.usuario) {
+        updateUser(response.data.usuario);
+        setUserData(response.data.usuario);
+        alert("¡Datos actualizados correctamente!");
+      }
+    } catch (error: unknown) {
+      let errorMessage = "Error al actualizar los datos";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      console.error("Error completo:", {
+        message: errorMessage,
+        token: localStorage.getItem("token"),
+        time: new Date().toISOString(),
+      });
+
+      alert(errorMessage);
+      throw error;
+    }
+  };
+
+  const handleUpdateAddress = async (address: any) => {
+    try {
+      const response = await axios.put("/api/users/address", address, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (response.data.usuario) {
+        updateUser(response.data.usuario);
+        setUserData(response.data.usuario);
+      }
+    } catch (error) {
+      console.error("Error al actualizar dirección:", error);
+      throw error;
+    }
+  };
 
   if (!userData) {
     return (
@@ -80,116 +165,53 @@ export default function Profile() {
           </h2>
 
           <div className="space-y-4">
-            {/* Cada fila de datos con animación individual */}
-            <motion.div
-              className="flex items-center group"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-              whileHover={{ x: 5 }}
-            >
-              <motion.div
-                className="bg-[#ffdede] p-3 rounded-full mr-4 group-hover:bg-[#af040d] transition-colors"
-                whileHover={{ rotate: 10, scale: 1.1 }}
-              >
+            {/* Campo de nombre completo */}
+            <EditableField
+              label="Nombre completo"
+              value={`${userData.nombre} ${userData.apellidos}`}
+              icon={
                 <FaUser className="text-[#af040d] text-xl group-hover:text-white transition-colors" />
-              </motion.div>
-              <div>
-                <p
-                  style={{ fontFamily: "Poppins" }}
-                  className="text-sm text-gray-500"
-                >
-                  Nombre completo
-                </p>
-                <p
-                  style={{ fontFamily: "Poppins" }}
-                  className="text-lg font-medium text-[#592d17] group-hover:text-[#af040d] transition-colors"
-                >
-                  {userData.nombre} {userData.apellidos}
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="flex items-center group"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ x: 5 }}
-            >
-              <motion.div
-                className="bg-[#ffdede] p-3 rounded-full mr-4 group-hover:bg-[#af040d] transition-colors"
-                whileHover={{ rotate: 10, scale: 1.1 }}
-              >
-                <FaPhone className="text-[#af040d] text-xl group-hover:text-white transition-colors" />
-              </motion.div>
-              <div>
-                <p
-                  style={{ fontFamily: "Poppins" }}
-                  className="text-sm text-gray-500"
-                >
-                  Teléfono
-                </p>
-                <p
-                  style={{ fontFamily: "Poppins" }}
-                  className="text-lg font-medium text-[#592d17] group-hover:text-[#af040d] transition-colors"
-                >
-                  {userData.telefono}
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="flex items-center group"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              whileHover={{ x: 5 }}
-            >
-              <motion.div
-                className="bg-[#ffdede] p-3 rounded-full mr-4 group-hover:bg-[#af040d] transition-colors"
-                whileHover={{ rotate: 10, scale: 1.1 }}
-              >
-                <FaEnvelope className="text-[#af040d] text-xl group-hover:text-white transition-colors" />
-              </motion.div>
-              <div>
-                <p
-                  style={{ fontFamily: "Poppins" }}
-                  className="text-sm text-gray-500"
-                >
-                  Correo electrónico
-                </p>
-                <p
-                  style={{ fontFamily: "Poppins" }}
-                  className="text-lg font-medium text-[#592d17] group-hover:text-[#af040d] transition-colors"
-                >
-                  {userData.email}
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Botón de editar con animación */}
-            <motion.button
-              className="absolute bottom-6 right-6 bg-[#af040d] text-white px-4 py-2 rounded-full flex items-center"
-              whileHover={{
-                scale: 1.05,
-                backgroundColor: "#8a030a",
-                transition: { type: "spring", stiffness: 400 },
+              }
+              onSave={async (newValue) => {
+                const [nombre, ...apellidos] = newValue.split(" ");
+                await handleUpdateUser("nombre", nombre);
+                await handleUpdateUser("apellidos", apellidos.join(" "));
               }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              <motion.span
-                style={{ fontFamily: "Poppins" }}
-                animate={{ rotate: 0 }}
-                whileHover={{ rotate: 10 }}
-              >
-                <FaEdit className="mr-2" />
-              </motion.span>
-              Editar
-            </motion.button>
+              validation={(value) => {
+                if (value.trim().split(" ").length < 2)
+                  return "Debe incluir nombre y apellido";
+                return null;
+              }}
+            />
+
+            {/* Campo de teléfono */}
+            <EditableField
+              label="Teléfono"
+              value={userData.telefono}
+              icon={
+                <FaPhone className="text-[#af040d] text-xl group-hover:text-white transition-colors" />
+              }
+              onSave={(newValue) => handleUpdateUser("telefono", newValue)}
+              validation={(value) => {
+                if (!/^[0-9]{9,12}$/.test(value)) return "Teléfono no válido";
+                return null;
+              }}
+            />
+
+            {/* Campo de email */}
+            <EditableField
+              label="Correo electrónico"
+              value={userData.email}
+              icon={
+                <FaEnvelope className="text-[#af040d] text-xl group-hover:text-white transition-colors" />
+              }
+              onSave={(newValue) => handleUpdateUser("email", newValue)}
+              validation={(value) => {
+                if (!/^\S+@\S+\.\S+$/.test(value)) return "Email no válido";
+                return null;
+              }}
+              inputType="email"
+            />
           </div>
         </motion.div>
 
@@ -215,72 +237,50 @@ export default function Profile() {
                 Dirección
               </h3>
               <div className="flex space-x-2">
-                <motion.button
-                  className="text-[#af040d] p-2 rounded-full hover:bg-[#ffdede]"
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <FaEdit />
-                </motion.button>
-                <motion.button
-                  className="text-[#af040d] p-2 rounded-full hover:bg-[#ffdede]"
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <FaTrash />
-                </motion.button>
+                {userData.direccion && (
+                  <>
+                    <motion.button
+                      className="text-[#af040d] p-2 rounded-full hover:bg-[#ffdede]"
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <FaEdit />
+                    </motion.button>
+                    <motion.button
+                      className="text-[#af040d] p-2 rounded-full hover:bg-[#ffdede]"
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <FaTrash />
+                    </motion.button>
+                  </>
+                )}
               </div>
             </div>
 
-            {userData.direccion ? (
-              <motion.div className="space-y-2 flex-grow" whileHover={{ x: 5 }}>
-                <div className="flex items-start">
-                  <motion.div whileHover={{ rotate: 15, scale: 1.1 }}>
-                    <FaMapMarkerAlt className="text-[#af040d] mt-1 mr-2" />
-                  </motion.div>
-                  <div>
-                    <p
-                      style={{ fontFamily: "Poppins" }}
-                      className="text-[#592d17] hover:text-[#af040d] transition-colors"
-                    >
-                      {userData.direccion.calle} #{userData.direccion.numero}
-                    </p>
-                    <p className="text-[#592d17] hover:text-[#af040d] transition-colors">
-                      {userData.direccion.comuna}, {userData.direccion.region}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ) : (
-              <p
-                style={{ fontFamily: "Poppins" }}
-                className="text-gray-500 italic flex-grow"
+            {!userData.direccion && (
+              <motion.button
+                className="mt-6 w-full bg-[#f4e9d7] text-[#592d17] py-2 rounded-full flex items-center justify-center hover:bg-[#e2c89f] transition"
+                whileHover={{
+                  scale: 1.02,
+                  backgroundColor: "#e2c89f",
+                  transition: { type: "spring" },
+                }}
+                whileTap={{ scale: 0.98 }}
               >
-                No hay dirección registrada
-              </p>
+                <motion.span
+                  style={{ fontFamily: "Poppins" }}
+                  animate={{ rotate: 0 }}
+                  whileHover={{ rotate: 90 }}
+                >
+                  <FaPlus className="mr-2" />
+                </motion.span>
+                Agregar
+              </motion.button>
             )}
-
-            <motion.button
-              className="mt-6 w-full bg-[#f4e9d7] text-[#592d17] py-2 rounded-full flex items-center justify-center hover:bg-[#e2c89f] transition"
-              whileHover={{
-                scale: 1.02,
-                backgroundColor: "#e2c89f",
-                transition: { type: "spring" },
-              }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <motion.span
-                style={{ fontFamily: "Poppins" }}
-                animate={{ rotate: 0 }}
-                whileHover={{ rotate: 90 }}
-              >
-                <FaPlus className="mr-2" />
-              </motion.span>
-              Agregar
-            </motion.button>
           </motion.div>
 
-          {/* Tarjeta de Chew Points con animaciones */}
+          {/* Resto de las tarjetas (ChewPoints y Acciones) se mantienen igual */}
           <motion.div
             style={{ fontFamily: "Poppins" }}
             className="bg-white rounded-xl shadow-lg p-6 flex flex-col"
@@ -319,7 +319,6 @@ export default function Profile() {
             </motion.p>
           </motion.div>
 
-          {/* Tarjeta de acciones con animaciones */}
           <motion.div
             className="bg-white rounded-xl shadow-lg p-6 flex flex-col"
             initial={{ opacity: 0, y: 20 }}
