@@ -31,6 +31,7 @@ export default function Promotions() {
       {/* Header */}
       <header className="container mx-auto px-4 py-12">
         <motion.h1
+          style={{ fontFamily: "Poppins" }}
           className="text-center text-5xl font-bold text-[#592d17] mb-4"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -39,6 +40,7 @@ export default function Promotions() {
           Chew Points
         </motion.h1>
         <motion.p
+          style={{ fontFamily: "Poppins" }}
           className="text-center text-lg text-[#af040d] italic mb-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -50,6 +52,7 @@ export default function Promotions() {
 
       {/* Banner 1: Todo sobre Chew Points */}
       <motion.section
+        style={{ fontFamily: "Poppins" }}
         className="max-w-6xl mx-auto mb-16 px-6"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -64,14 +67,21 @@ export default function Promotions() {
             transition={{ type: "spring" }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-[#592d17] mb-4">
+            <h2
+              style={{ fontFamily: "Poppins" }}
+              className="text-4xl font-bold text-[#592d17] mb-4"
+            >
               ¡Canjea productos GRATIS!
             </h2>
-            <p className="text-lg text-[#592d17] mb-6">
+            <p
+              style={{ fontFamily: "Poppins" }}
+              className="text-lg text-[#592d17] mb-6"
+            >
               Con Chew Points, cada compra te acerca a deliciosas recompensas.
               Acumula puntos y redímelos por productos exclusivos.
             </p>
             <motion.button
+              style={{ fontFamily: "Poppins" }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-[#af040d] text-white px-6 py-3 rounded-full font-bold self-start"
@@ -105,6 +115,7 @@ export default function Promotions() {
       >
         <div className="bg-[#f4e9d7] rounded-2xl shadow-lg p-8">
           <motion.h2
+            style={{ fontFamily: "Poppins" }}
             className="text-3xl font-bold text-[#592d17] mb-6 text-center"
             initial={{ y: 20 }}
             whileInView={{ y: 0 }}
@@ -122,16 +133,20 @@ export default function Promotions() {
             viewport={{ once: true }}
           >
             <motion.div
+              style={{ fontFamily: "Poppins" }}
               className="bg-white p-6 rounded-xl shadow-md flex-1 text-center"
               whileHover={{ y: -5 }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
             >
               <div className="text-6xl text-[#af040d] mb-4">10</div>
-              <h3 className="text-xl font-bold text-[#592d17] mb-2">
+              <h3
+                style={{ fontFamily: "Poppins" }}
+                className="text-xl font-bold text-[#592d17] mb-2"
+              >
                 ChewPoints
               </h3>
-              <p className="text-[#592d17]">
+              <p style={{ fontFamily: "Poppins" }} className="text-[#592d17]">
                 por cada compra superior a $10.000 en nuestra tienda online
               </p>
             </motion.div>
@@ -144,15 +159,19 @@ export default function Promotions() {
               transition={{ delay: 0.1 }}
             >
               <div className="text-6xl text-[#af040d] mb-4">5</div>
-              <h3 className="text-xl font-bold text-[#592d17] mb-2">
+              <h3
+                style={{ fontFamily: "Poppins" }}
+                className="text-xl font-bold text-[#592d17] mb-2"
+              >
                 ChewPoints
               </h3>
-              <p className="text-[#592d17]">
+              <p style={{ fontFamily: "Poppins" }} className="text-[#592d17]">
                 por cada reseña con foto de tu compra
               </p>
             </motion.div>
 
             <motion.div
+              style={{ fontFamily: "Poppins" }}
               className="bg-white p-6 rounded-xl shadow-md flex-1 text-center"
               whileHover={{ y: -5 }}
               initial={{ opacity: 0, y: 20 }}
@@ -160,10 +179,13 @@ export default function Promotions() {
               transition={{ delay: 0.2 }}
             >
               <div className="text-6xl text-[#af040d] mb-4">2</div>
-              <h3 className="text-xl font-bold text-[#592d17] mb-2">
+              <h3
+                style={{ fontFamily: "Poppins" }}
+                className="text-xl font-bold text-[#592d17] mb-2"
+              >
                 ChewPoints
               </h3>
-              <p className="text-[#592d17]">
+              <p style={{ fontFamily: "Poppins" }} className="text-[#592d17]">
                 por cada cumpleaños en nuestro sistema
               </p>
             </motion.div>
@@ -181,6 +203,7 @@ export default function Promotions() {
       >
         <div className="bg-[#e2c89f] rounded-2xl shadow-lg p-8">
           <motion.h2
+            style={{ fontFamily: "Poppins" }}
             className="text-3xl font-bold text-[#592d17] mb-8 text-center"
             initial={{ y: 20 }}
             whileInView={{ y: 0 }}
@@ -191,6 +214,7 @@ export default function Promotions() {
           </motion.h2>
 
           <motion.div
+            style={{ fontFamily: "Poppins" }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -245,6 +269,7 @@ export default function Promotions() {
       >
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <motion.h2
+            style={{ fontFamily: "Poppins" }}
             className="text-3xl font-bold text-[#592d17] mb-6 text-center py-6 bg-[#ffdede]"
             initial={{ y: 20 }}
             whileInView={{ y: 0 }}
@@ -270,12 +295,23 @@ export default function Promotions() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <div className="text-4xl font-bold mb-2">
+                <div
+                  style={{ fontFamily: "Poppins" }}
+                  className="text-4xl font-bold mb-2"
+                >
                   {product.points} CP
                 </div>
-                <h3 className="text-2xl font-bold mb-4">{product.title}</h3>
-                <p className="mb-6">{product.description}</p>
+                <h3
+                  style={{ fontFamily: "Poppins" }}
+                  className="text-2xl font-bold mb-4"
+                >
+                  {product.title}
+                </h3>
+                <p style={{ fontFamily: "Poppins" }} className="mb-6">
+                  {product.description}
+                </p>
                 <motion.button
+                  style={{ fontFamily: "Poppins" }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="bg-[#af040d] text-white px-6 py-2 rounded-full font-bold"

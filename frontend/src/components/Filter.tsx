@@ -48,7 +48,7 @@ export default function Filter({ onSearch }: FilterProps) {
 
   return (
     <motion.div
-      className="bg-[#f4e9d7] p-6 rounded-xl shadow-lg mb-6 border border-[#e2c89f]"
+      className="bg-[#ffffff] p-6 rounded-xl shadow-lg mb-6 border border-[#e2c89f]"
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, type: "spring" }}
@@ -61,7 +61,7 @@ export default function Filter({ onSearch }: FilterProps) {
           <motion.span animate={{ rotate: 0 }} whileHover={{ rotate: 15 }}>
             <FaFilter className="mr-2" />
           </motion.span>
-          <span style={{ fontFamily: "Principal" }}>Filtrar Galletas</span>
+          <span style={{ fontFamily: "Poppins" }}>Filtrar Galletas</span>
         </motion.h2>
 
         <motion.button
@@ -226,7 +226,7 @@ export default function Filter({ onSearch }: FilterProps) {
       <motion.button
         onClick={handleApplyFilters}
         className="w-full bg-[#af040d] text-white py-2 rounded-lg font-bold"
-        style={{ fontFamily: "Principal" }}
+        style={{ fontFamily: "Poppins" }}
         whileHover={{
           scale: 1.02,
           backgroundColor: "#8a030a",
@@ -234,7 +234,7 @@ export default function Filter({ onSearch }: FilterProps) {
         }}
         whileTap={{ scale: 0.98 }}
       >
-        Aplicar Filtros
+        Aplicar
       </motion.button>
     </motion.div>
   );

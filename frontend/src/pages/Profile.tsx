@@ -31,7 +31,12 @@ export default function Profile() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-[#592d17] text-xl">Cargando perfil...</p>
+          <p
+            style={{ fontFamily: "Poppins" }}
+            className="text-[#592d17] text-xl"
+          >
+            Cargando perfil...
+          </p>
         </motion.div>
       </main>
     );
@@ -46,7 +51,10 @@ export default function Profile() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <h1 className="text-center text-4xl font-bold text-[#592d17] mb-4">
+        <h1
+          style={{ fontFamily: "Poppins" }}
+          className="text-center text-4xl font-bold text-[#592d17] mb-4"
+        >
           Mi Perfil
         </h1>
       </motion.header>
@@ -64,7 +72,10 @@ export default function Profile() {
             boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <h2 className="text-2xl font-bold text-[#592d17] mb-6 pb-2 border-b border-[#f4e9d7]">
+          <h2
+            style={{ fontFamily: "Poppins" }}
+            className="text-2xl font-bold text-[#592d17] mb-6 pb-2 border-b border-[#f4e9d7]"
+          >
             Mis Datos
           </h2>
 
@@ -84,8 +95,16 @@ export default function Profile() {
                 <FaUser className="text-[#af040d] text-xl group-hover:text-white transition-colors" />
               </motion.div>
               <div>
-                <p className="text-sm text-gray-500">Nombre completo</p>
-                <p className="text-lg font-medium text-[#592d17] group-hover:text-[#af040d] transition-colors">
+                <p
+                  style={{ fontFamily: "Poppins" }}
+                  className="text-sm text-gray-500"
+                >
+                  Nombre completo
+                </p>
+                <p
+                  style={{ fontFamily: "Poppins" }}
+                  className="text-lg font-medium text-[#592d17] group-hover:text-[#af040d] transition-colors"
+                >
                   {userData.nombre} {userData.apellidos}
                 </p>
               </div>
@@ -105,8 +124,16 @@ export default function Profile() {
                 <FaPhone className="text-[#af040d] text-xl group-hover:text-white transition-colors" />
               </motion.div>
               <div>
-                <p className="text-sm text-gray-500">Teléfono</p>
-                <p className="text-lg font-medium text-[#592d17] group-hover:text-[#af040d] transition-colors">
+                <p
+                  style={{ fontFamily: "Poppins" }}
+                  className="text-sm text-gray-500"
+                >
+                  Teléfono
+                </p>
+                <p
+                  style={{ fontFamily: "Poppins" }}
+                  className="text-lg font-medium text-[#592d17] group-hover:text-[#af040d] transition-colors"
+                >
                   {userData.telefono}
                 </p>
               </div>
@@ -126,8 +153,16 @@ export default function Profile() {
                 <FaEnvelope className="text-[#af040d] text-xl group-hover:text-white transition-colors" />
               </motion.div>
               <div>
-                <p className="text-sm text-gray-500">Correo electrónico</p>
-                <p className="text-lg font-medium text-[#592d17] group-hover:text-[#af040d] transition-colors">
+                <p
+                  style={{ fontFamily: "Poppins" }}
+                  className="text-sm text-gray-500"
+                >
+                  Correo electrónico
+                </p>
+                <p
+                  style={{ fontFamily: "Poppins" }}
+                  className="text-lg font-medium text-[#592d17] group-hover:text-[#af040d] transition-colors"
+                >
                   {userData.email}
                 </p>
               </div>
@@ -146,7 +181,11 @@ export default function Profile() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <motion.span animate={{ rotate: 0 }} whileHover={{ rotate: 10 }}>
+              <motion.span
+                style={{ fontFamily: "Poppins" }}
+                animate={{ rotate: 0 }}
+                whileHover={{ rotate: 10 }}
+              >
                 <FaEdit className="mr-2" />
               </motion.span>
               Editar
@@ -169,7 +208,12 @@ export default function Profile() {
             }}
           >
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-[#592d17]">Dirección</h3>
+              <h3
+                style={{ fontFamily: "Poppins" }}
+                className="text-xl font-bold text-[#592d17]"
+              >
+                Dirección
+              </h3>
               <div className="flex space-x-2">
                 <motion.button
                   className="text-[#af040d] p-2 rounded-full hover:bg-[#ffdede]"
@@ -195,7 +239,10 @@ export default function Profile() {
                     <FaMapMarkerAlt className="text-[#af040d] mt-1 mr-2" />
                   </motion.div>
                   <div>
-                    <p className="text-[#592d17] hover:text-[#af040d] transition-colors">
+                    <p
+                      style={{ fontFamily: "Poppins" }}
+                      className="text-[#592d17] hover:text-[#af040d] transition-colors"
+                    >
                       {userData.direccion.calle} #{userData.direccion.numero}
                     </p>
                     <p className="text-[#592d17] hover:text-[#af040d] transition-colors">
@@ -205,7 +252,10 @@ export default function Profile() {
                 </div>
               </motion.div>
             ) : (
-              <p className="text-gray-500 italic flex-grow">
+              <p
+                style={{ fontFamily: "Poppins" }}
+                className="text-gray-500 italic flex-grow"
+              >
                 No hay dirección registrada
               </p>
             )}
@@ -219,7 +269,11 @@ export default function Profile() {
               }}
               whileTap={{ scale: 0.98 }}
             >
-              <motion.span animate={{ rotate: 0 }} whileHover={{ rotate: 90 }}>
+              <motion.span
+                style={{ fontFamily: "Poppins" }}
+                animate={{ rotate: 0 }}
+                whileHover={{ rotate: 90 }}
+              >
                 <FaPlus className="mr-2" />
               </motion.span>
               Agregar
@@ -228,6 +282,7 @@ export default function Profile() {
 
           {/* Tarjeta de Chew Points con animaciones */}
           <motion.div
+            style={{ fontFamily: "Poppins" }}
             className="bg-white rounded-xl shadow-lg p-6 flex flex-col"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -238,7 +293,10 @@ export default function Profile() {
               boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <h3 className="text-xl font-bold text-[#592d17] mb-4">
+            <h3
+              style={{ fontFamily: "Poppins" }}
+              className="text-xl font-bold text-[#592d17] mb-4"
+            >
               Mis ChewPoints
             </h3>
             <div className="text-center py-4 flex-grow flex flex-col justify-center">
@@ -248,9 +306,12 @@ export default function Profile() {
               >
                 0
               </motion.div>
-              <p className="text-[#592d17]">Puntos acumulados</p>
+              <p style={{ fontFamily: "Poppins" }} className="text-[#592d17]">
+                Puntos acumulados
+              </p>
             </div>
             <motion.p
+              style={{ fontFamily: "Poppins" }}
               className="text-sm text-gray-500 text-center mt-4"
               whileHover={{ color: "#592d17" }}
             >

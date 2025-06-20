@@ -60,18 +60,27 @@ export default function CookieGrid({ filters }: CookieGridProps) {
   }, [filters, productos]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-      {filteredProducts.length > 0 ? (
-        filteredProducts.map((producto) => (
-          <CookieItem key={producto.id_producto} product={producto} />
-        ))
-      ) : (
-        <div className="col-span-full text-center py-12">
-          <p className="text-xl text-[#592d17]">
-            No se encontraron productos que coincidan con los filtros
-          </p>
-        </div>
-      )}
+    <div className="space-y-6">
+      {/* Mostrar cantidad de resultados */}
+      <p className="text-[#592d17] font-medium">
+        {filteredProducts.length}{" "}
+        {filteredProducts.length === 1 ? "producto" : "productos"} encontrados
+      </p>
+
+      {/* Grid de productos */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((producto) => (
+            <CookieItem key={producto.id_producto} product={producto} />
+          ))
+        ) : (
+          <div className="col-span-full text-center py-12">
+            <p className="text-xl text-[#592d17]">
+              No se encontraron productos que coincidan con los filtros
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -36,17 +36,15 @@ export default function Catalogo() {
         </p>
       </header>
 
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 px-4">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 px-4 space-x-11">
         {/* Filtro en la izquierda */}
-        <div className="md:w-1/4">
+        <div className="md:w-1/4 mt-12">
           <Filter onSearch={setFilters} />
         </div>
 
         {/* Galletas en la derecha */}
-        <div className="md:w-3/4">
-          <section className="bg-[#f2e1c2] rounded-xl p-6 shadow-lg">
-            <CookieGrid filters={filters} />
-          </section>
+        <div className="md:w-3/4 ">
+          <CookieGrid filters={filters} />
         </div>
       </div>
       <Footer />
