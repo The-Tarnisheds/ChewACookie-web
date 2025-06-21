@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
 import ListBoxLocation from "../components/ListBoxLocation";
+import { useNavigate } from "react-router-dom";
 
 interface Region {
   id_region: number
@@ -15,6 +16,7 @@ interface Comuna {
 }
 
 export default function RegisterForm() {
+    const navigate = useNavigate();
     const [region, setRegion] = useState<Region | null>(null)
     const [comuna, setComuna] = useState<Comuna | null>(null)
     const [showPassword, setShowPassword] = useState(false);
@@ -51,6 +53,7 @@ export default function RegisterForm() {
     console.log('Región:', region);
     console.log('Comuna:', comuna);
 
+
     if (!passwordsMatch) return;
 
     const payload = {
@@ -65,11 +68,10 @@ export default function RegisterForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
         });
-        console.log(payload)
-
-
         const data = await res.json();
+        localStorage.setItem("user", JSON.stringify(data.usuario));
         console.log("Registro exitoso:", data);
+        navigate("/");
     } catch (err) {
         console.error("Error al enviar el formulario:", err);
     }
@@ -254,9 +256,7 @@ export default function RegisterForm() {
               type="submit"
               className="w-full mt-7 py-2 px-4 bg-[#592d17] text-white rounded-md font-medium hover:bg-[#452212] transition"
             >
-              <a href="/">
                   Registrarse
-              </a>
             </button>
           
         </div>

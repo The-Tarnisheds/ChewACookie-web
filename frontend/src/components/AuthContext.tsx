@@ -64,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       updateUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", JSON.stringify(data.token));
     } catch (error) {
       console.error("Error completo en login:", error);
       throw error;
@@ -73,6 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    window.location.href = "/login";
   };
 
   const isAuthenticated = !!user;

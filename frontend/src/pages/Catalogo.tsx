@@ -27,23 +27,23 @@ export default function Catalogo() {
       <header className="container mx-auto px-4 py-10">
         <h1
           style={{ fontFamily: "Principal" }}
-          className="text-center text-5xl font-bold text-amber-800 mb-4"
+          className="text-center text-5xl font-bold text-amber-800 "
         >
           Catálogo de Galletas
         </h1>
-        <p className="text-center text-lg text-gray-700 italic mb-6">
+        <p className="text-center text-lg text-gray-700 italic ">
           Explora nuestra variedad de sabores irresistibles 🍪
         </p>
       </header>
 
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 px-4 space-x-11">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row  gap-6  ">
         {/* Filtro en la izquierda */}
-        <div className="md:w-1/4 mt-12">
+        <div className="md:w-1/4 lg:w-1/4 mt-12">
           <Filter onSearch={setFilters} />
         </div>
 
         {/* Galletas en la derecha */}
-        <div className="md:w-3/4 ">
+        <div className="md:w-3/4 lg:w-3/4">
           <CookieGrid filters={filters} />
         </div>
       </div>
