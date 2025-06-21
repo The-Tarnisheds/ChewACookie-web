@@ -1,4 +1,3 @@
-import { Producto } from "../models/galleta";
 import { Request, Response } from "express";
 import HttpStatusCode from "../utils/http-status-code";
 import { errorHandler, CustomError } from "../utils/error_handler";
@@ -8,7 +7,7 @@ import jwt from "jsonwebtoken";
 import { Admin } from "../models/usuario.";
 import { AuthenticatedRequest } from "../middlewares/authMiddleware";
 
-const findUserByEmail = async (email: string) => {
+export const findUserByEmail = async (email: string) => {
   return await Usuario.findOne({ where: { email } });
 };
 
@@ -33,17 +32,7 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
     pass2,
   } = req.body;
   try {
-    if (
-      !nombre ||
-      !apellidos ||
-      !email ||
-      !calle ||
-      !numCalle ||
-      !telefono ||
-      !nombre_comuna ||
-      !pass ||
-      !pass2
-    ) {
+    if (!nombre ||!apellidos ||!email ||!calle ||!numCalle ||!telefono ||!nombre_comuna ||!pass ||!pass2) {
       return res.status(HttpStatusCode.BAD_REQUEST).json({
         message: "Todos los datos son obligatorios",
         success: false,
@@ -90,10 +79,33 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
       id_comuna: comuna?.get("id_comuna"),
       id_region: comuna?.get("id_region"),
     });
+    const isAdmin = await Admin.findOne({ where: { email } });
+
+
+    const userData = {
+      nombre: toTitleCase(nuevoUsuario.get("nombre") as string),
+      apellidos: toTitleCase(nuevoUsuario.get("apellidos") as string),
+      email: nuevoUsuario.get("email"),
+      telefono: nuevoUsuario.get("telefono"),
+      direccion: {
+        calle: nuevaDireccion?.get("calle"),
+        numero: nuevaDireccion?.get("numero"),
+        comuna: comuna?.get("nombre_comuna"),
+        region: comuna?.get("nombre_region"),
+      },
+      isAdmin: !!isAdmin,
+    }
+
+    const tokenPayload = {
+      id: nuevoUsuario.get("id_usuario"),
+      isAdmin: Boolean(isAdmin),
+    };
+
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET as string, { expiresIn: "2h" });
 
     res
       .status(HttpStatusCode.OK)
-      .json({ mensaje: "Cuenta creada exitosamente", usuario: nuevoUsuario });
+      .json({ mensaje: "Cuenta creada exitosamente", usuario: userData });
   } catch (error) {
     errorHandler(error as CustomError | undefined, req, res);
   }
@@ -197,11 +209,15 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
 };
 
 const editUserPersonalData = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
+  const email = req.params;
   const { nombre, apellidos, telefono, newEmail } = req.body;
 
   const userId = req.user?.id;
   if (!userId) {
-    return res.status(401).json({ success: false, message: "No autorizado" });
+    return res.status(HttpStatusCode.BAD_REQUEST).json({
+        message: "Usuario no encontrado",
+        success: false,
+      });
   }
 
   try {

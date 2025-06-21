@@ -8,6 +8,6 @@ const baseUrl = "/users";
 router.post(`${baseUrl}/create`, createUser);
 router.get(`${baseUrl}/location`, getLocations);
 router.post(`${baseUrl}/login`, loginUser);
-router.put(`${baseUrl}/edit-user`, verifyToken, editUserPersonalData);
+router.put(`${baseUrl}/edit-user`,verifyToken, editUserPersonalData);
 const users = router;
 export default users;
