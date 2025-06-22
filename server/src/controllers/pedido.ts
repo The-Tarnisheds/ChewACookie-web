@@ -3,71 +3,87 @@ import HttpStatusCode from "../utils/http-status-code";
 import { errorHandler, CustomError } from "../utils/error_handler";
 import { Usuario } from "../models/usuario.";
 import { Pedido, DetallePedido, Promo } from "../models/pedido";
+import sequelize from "../config/db";
 
 const createPedido = async (req: Request, res: Response): Promise<any> => {
-  const { email, productId, quantity, price} = req.body;
-    try {
-        if (!email || !productId || !quantity || !price) {
-            return res.status(HttpStatusCode.BAD_REQUEST).json({
-                message: "Todos los datos son obligatorios",
-                success: false,
-            });
-        }
+  const { email, products } = req.body;
 
-        const user = await Usuario.findOne({
-            where: { email }
-        });
-        if (!user) {
-            return res.status(HttpStatusCode.NOT_FOUND).json({
-                message: "Usuario no encontrado",
-                success: false,
-            });
-        }
-        const pedido = await Pedido.create({
-            id_usuario: user.get("id_usuario"),
-            estado: "pendiente",
-            fecha: new Date(),
-        })
-        const subtotal = price * quantity;
-        const detail = await DetallePedido.create({
-            id_pedido: pedido.get("id_pedido"),
-            id_producto: productId,
-            cantidad: quantity,
-            subtotal: subtotal,
-            estado: "pendiente",
-            fecha: new Date(),
-        });
+  if (!email || !products || !Array.isArray(products) || products.length === 0) {
+    return res.status(HttpStatusCode.BAD_REQUEST).json({
+      message: "Email y al menos un producto son obligatorios",
+      success: false,
+    });
+  }
 
-        if(subtotal >= 10000){
-            const promo = await Promo.findOne({
-                where: { id_usuario: user.get("id_usuario") }
-            });
-            if(!promo){
-                const now = new Date();
-                const fechaVigencia = new Date(now.setMonth(now.getMonth() + 3));
-    
-                const newPromo = await Promo.create({
-                id_usuario: user.get("id_usuario"),
-                fecha_vigencia: fechaVigencia,
-                puntos: 10
-                });
-                console.log("Nueva promoción creada:", newPromo);
-            }else{
-                const updatedPromo = await (promo as any).update({
-                    puntos: (promo as any).get("puntos") + 10,
-                });
-                console.log("Promoción actualizada:", updatedPromo);
-            }
-        }
-        res.status(HttpStatusCode.CREATED).json({
-            message: "Pedido creado exitosamente",
-            success: true,
-            data: detail
-        });
-    } catch (error) {
-        errorHandler(error as CustomError | undefined, req, res);
+  const transaction = await sequelize.transaction();
+  try {
+    const user = await Usuario.findOne({ where: { email }, transaction });
+    if (!user) {
+      await transaction.rollback();
+      return res.status(HttpStatusCode.NOT_FOUND).json({
+        message: "Usuario no encontrado",
+        success: false,
+      });
     }
-}
+
+    const pedido = await Pedido.create({
+      id_usuario: user.get("id_usuario"),
+      estado: "pendiente",
+      fecha: new Date(),
+    }, { transaction });
+
+    let totalPedido = 0;
+    const detalles = [];
+
+    for (const p of products) {
+      const subtotal = p.precio * p.quantity;
+      totalPedido += subtotal;
+
+      const detail = await DetallePedido.create({
+        id_pedido: pedido.get("id_pedido"),
+        id_producto: p.id_producto,
+        cantidad: p.quantity,
+        subtotal: subtotal,
+        estado: "pendiente",
+        fecha: new Date(),
+      }, { transaction });
+
+      detalles.push(detail);
+    }
+
+    if (totalPedido >= 10000) {
+      const promo = await Promo.findOne({
+        where: { id_usuario: user.get("id_usuario") },
+        transaction
+      });
+
+      if (!promo) {
+        const now = new Date();
+        const fechaVigencia = new Date(now.setMonth(now.getMonth() + 3));
+
+        await Promo.create({
+          id_usuario: user.get("id_usuario"),
+          fecha_vigencia: fechaVigencia,
+          puntos: 10
+        }, { transaction });
+      } else {
+        await (promo as any).update({
+          puntos: (promo as any).get("puntos") + 10,
+        }, { transaction });
+      }
+    }
+
+    await transaction.commit();
+    res.status(HttpStatusCode.CREATED).json({
+      message: "Pedido creado exitosamente",
+      success: true,
+      data: detalles
+    });
+  } catch (error) {
+    await transaction.rollback();
+    errorHandler(error as CustomError | undefined, req, res);
+  }
+};
 
 export { 
     createPedido
