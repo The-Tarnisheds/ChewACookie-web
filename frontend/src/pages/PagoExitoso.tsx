@@ -1,7 +1,8 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useCart } from "../components/CartContext";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import axios from "axios";
 
 
 export default function PagoExitoso() {
@@ -21,9 +22,31 @@ export default function PagoExitoso() {
   // Obtener parámetros de MercadoPago
   const paymentId = searchParams.get("payment_id");
   
+  
   // Limpiar carrito al montar el componente
   useEffect(() => {
     console.log(detail)
+    const user = localStorage.getItem("user")
+    const email = user ? JSON.parse(user).email : '';
+
+    const crearPedido = async () => {
+  try {
+    
+    const response = await axios.post('http://localhost:3000/api/pedidos/create', {
+      email: email,
+      products: detail
+    });
+
+    console.log('Respuesta del servidor:', response.data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Error en la petición:', error.response?.data || error.message);
+    } else {
+      console.error('Error desconocido:', error);
+    }
+  }
+};
+    crearPedido();
     clearCart();
 
   }, []);

@@ -70,11 +70,11 @@ export const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  //<React.StrictMode>
     <AuthProvider>
       <CartProvider>
         <RouterProvider router={router} />
       </CartProvider>
     </AuthProvider>
-  </React.StrictMode>
+  //</React.StrictMode>
 );
