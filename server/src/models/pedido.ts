@@ -12,7 +12,6 @@ const Pedido = sequelize.define('pedido', {
     },
     id_usuario: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         references: {
             model: Usuario,
             key: 'id_usuario'

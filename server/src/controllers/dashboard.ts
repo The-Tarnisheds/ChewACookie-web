@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 import HttpStatusCode from "../utils/http-status-code";
 import { errorHandler, CustomError } from "../utils/error_handler";
 import sequelize from "../config/db";
+import { Op } from "sequelize";
 
 
 const getMostSoldsProducts = async (req: Request, res: Response): Promise<any> => {
@@ -91,8 +92,74 @@ const getTotalSales = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
+const totalOrders = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const totalOrders = await Pedido.count();
+        
+        res.status(HttpStatusCode.OK).json({
+            message: "Total de pedidos obtenido correctamente",
+            success: true,
+            data: totalOrders,
+        });
+
+    } catch (error) {
+        errorHandler(error as CustomError | undefined, req, res);
+    }
+}
+
+const detailSales = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const monthlySales = await DetallePedido.sum('subtotal', {
+      where: {
+        fecha: {
+          [Op.gte]: sequelize.literal(`DATEADD(DAY, -30, GETDATE())`)
+        }
+      }
+    });
+    const weeklySales = await DetallePedido.sum('subtotal', {
+      where: {
+        fecha: {
+          [Op.gte]: sequelize.literal(`DATEADD(DAY, -7, GETDATE())`)
+        }
+      }
+    });
+    const yesterdaySales = await DetallePedido.sum('subtotal', {
+      where: {
+        fecha: {
+          [Op.gte]: sequelize.literal(`CONVERT(date, DATEADD(DAY, -1, GETDATE()))`),
+          [Op.lt]: sequelize.literal(`CONVERT(date, GETDATE())`)
+        }
+      }
+    });
+    const todaySales = await DetallePedido.sum('subtotal', {
+      where: {
+        fecha: {
+          [Op.gte]: sequelize.literal(`CONVERT(date, GETDATE())`)
+        }
+      }
+    });
+
+    res.status(HttpStatusCode.OK).json({
+      message: "Resumen de ventas obtenido correctamente",
+      success: true,
+      data: {
+        monthlySales,
+        weeklySales,
+        yesterdaySales,
+        todaySales
+      }
+    });
+    
+  } catch (error) {
+    errorHandler(error as CustomError | undefined, req, res);
+    
+  }
+}
+
 export{
     getMostSoldsProducts,
     getLeastSoldsProducts,
-    getTotalSales
+    getTotalSales,
+    totalOrders,
+    detailSales
 }
