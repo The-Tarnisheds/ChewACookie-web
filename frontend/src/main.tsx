@@ -15,6 +15,7 @@ import { AuthProvider } from "./components/AuthContext";
 import Promotions from "./pages/Promotion";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
+import Crud from "./pages/GestionProductos";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: "admin-dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "admin-crud",
+        element: <Crud />,
       },
     ],
   },
