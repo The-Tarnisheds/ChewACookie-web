@@ -7,16 +7,108 @@ import jwt from "jsonwebtoken";
 import { Admin } from "../models/usuario.";
 import { AuthenticatedRequest } from "../middlewares/authMiddleware";
 
+import nodemailer from "nodemailer";
+
+// Controlador para enviar correo
+export const enviarRecuperacion = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { email } = req.body;
+
+  try {
+    const user = (await Usuario.findOne({ where: { email } })) as any;
+    if (!user) {
+      res.status(404).json({ success: false, message: "Correo no registrado" });
+      return;
+    }
+
+    // Enlace directo (¡INSEGURO! Solo para pruebas)
+    const resetLink = `http://localhost:3000/reset-password?email=${encodeURIComponent(
+      email
+    )}`;
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // true para el puerto 465
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    await transporter.sendMail({
+      from: `"Chew A Cookie" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Restablecer contraseña",
+      html: `
+        <p>Hola ${user.nombre},</p>
+        <p>Haz clic aquí para restablecer tu contraseña:</p>
+        <a href="${resetLink}">Restablecer ahora</a>
+        <p>Si no solicitaste esto, ignora este correo.</p>
+      `,
+    });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Error al enviar correo:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error al procesar la solicitud" });
+  }
+};
+
 export const findUserByEmail = async (email: string) => {
   return await Usuario.findOne({ where: { email } });
+};
+
+// Controlador para cambiar contraseña
+// Controlador para cambiar contraseña (sin token)
+export const reestablecerContrasena = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { email, password } = req.body; // Ahora solo requiere email y nueva contraseña
+
+  try {
+    // Busca al usuario directamente por email
+    const user = await Usuario.findOne({ where: { email } });
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "Usuario no encontrado",
+      });
+      return;
+    }
+
+    // Hashea y actualiza la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await user.update({ pass: hashedPassword });
+
+    res.json({
+      success: true,
+      message: "Contraseña actualizada correctamente",
+    });
+  } catch (error) {
+    console.error("Error al restablecer:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error interno del servidor",
+    });
+  }
 };
 
 function toTitleCase(str: string) {
   return str
     .toLowerCase()
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 const createUser = async (req: Request, res: Response): Promise<any> => {
@@ -32,7 +124,17 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
     pass2,
   } = req.body;
   try {
-    if (!nombre ||!apellidos ||!email ||!calle ||!numCalle ||!telefono ||!nombre_comuna ||!pass ||!pass2) {
+    if (
+      !nombre ||
+      !apellidos ||
+      !email ||
+      !calle ||
+      !numCalle ||
+      !telefono ||
+      !nombre_comuna ||
+      !pass ||
+      !pass2
+    ) {
       return res.status(HttpStatusCode.BAD_REQUEST).json({
         message: "Todos los datos son obligatorios",
         success: false,
@@ -81,7 +183,6 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
     });
     const isAdmin = await Admin.findOne({ where: { email } });
 
-
     const userData = {
       nombre: toTitleCase(nuevoUsuario.get("nombre") as string),
       apellidos: toTitleCase(nuevoUsuario.get("apellidos") as string),
@@ -94,14 +195,16 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
         region: comuna?.get("nombre_region"),
       },
       isAdmin: !!isAdmin,
-    }
+    };
 
     const tokenPayload = {
       id: nuevoUsuario.get("id_usuario"),
       isAdmin: Boolean(isAdmin),
     };
 
-    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET as string, { expiresIn: "2h" });
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET as string, {
+      expiresIn: "2h",
+    });
 
     res
       .status(HttpStatusCode.OK)
@@ -152,24 +255,24 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
     if (!isMatch) {
       return res.status(HttpStatusCode.UNAUTHORIZED).json({
         success: false,
-        message: "Usuario o contraseña incorrectas"
+        message: "Usuario o contraseña incorrectas",
       });
     }
 
     const address = await Direccion.findOne({
       where: {
-      id_usuario: user.get("id_usuario")},
+        id_usuario: user.get("id_usuario"),
+      },
     });
 
     const region = await Region.findOne({
-      where: {id_region: address?.get("id_region")},
+      where: { id_region: address?.get("id_region") },
     });
     const comuna = await Comuna.findOne({
-      where: {id_comuna: address?.get("id_comuna")},
+      where: { id_comuna: address?.get("id_comuna") },
     });
 
     const isAdmin = await Admin.findOne({ where: { email } });
-
 
     const userData = {
       nombre: toTitleCase(user.get("nombre") as string),
@@ -183,15 +286,16 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
         region: region?.get("nombre_region"),
       },
       isAdmin: !!isAdmin,
-    }
+    };
 
     const tokenPayload = {
       id: user.get("id_usuario"),
       isAdmin: Boolean(isAdmin),
     };
 
-    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET as string, { expiresIn: "2h" });
-
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET as string, {
+      expiresIn: "2h",
+    });
 
     res.status(HttpStatusCode.OK).json({
       success: true,
@@ -208,16 +312,19 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-const editUserPersonalData = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
+const editUserPersonalData = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<any> => {
   const email = req.params;
   const { nombre, apellidos, telefono, newEmail } = req.body;
 
   const userId = req.user?.id;
   if (!userId) {
     return res.status(HttpStatusCode.BAD_REQUEST).json({
-        message: "Usuario no encontrado",
-        success: false,
-      });
+      message: "Usuario no encontrado",
+      success: false,
+    });
   }
 
   try {
@@ -228,7 +335,7 @@ const editUserPersonalData = async (req: AuthenticatedRequest, res: Response): P
       });
     }
 
-    const user = await Usuario.findOne({ where: { id_usuario: userId } }); 
+    const user = await Usuario.findOne({ where: { id_usuario: userId } });
 
     if (!user) {
       return res.status(HttpStatusCode.NOT_FOUND).json({

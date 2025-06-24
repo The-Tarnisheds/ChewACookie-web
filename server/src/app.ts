@@ -1,7 +1,7 @@
 import express from "express";
 import routes from "./routes";
 import cors from "cors";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -21,6 +21,7 @@ app.use((req, res, next) => {
 const allowedOrigins = [
   "https://rt2c7pr1-5173.brs.devtunnels.ms",
   "http://localhost:5173",
+  "https://bb57d3vq-5173.brs.devtunnels.ms",
 ];
 
 app.use(
