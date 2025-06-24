@@ -101,7 +101,10 @@ export default function LoginPage() {
 
           {/* Enlace de recuperar contraseña */}
           <div className="text-center">
-            <a href="#" className="text-sm text-[#592d17] hover:underline">
+            <a
+              href="/recuperar"
+              className="text-sm text-[#592d17] hover:underline"
+            >
               ¿Olvidaste tu contraseña?
             </a>
           </div>

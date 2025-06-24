@@ -16,6 +16,8 @@ import Promotions from "./pages/Promotion";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import Crud from "./pages/GestionProductos";
+import PassRecovery from "./pages/PassRecovery";
+import ResetPassword from "./pages/ResetPassword";
 
 export const router = createBrowserRouter([
   {
@@ -70,16 +72,24 @@ export const router = createBrowserRouter([
         path: "admin-crud",
         element: <Crud />,
       },
+      {
+        path: "recuperar",
+        element: <PassRecovery />,
+      },
+      {
+        path: "reestablecer",
+        element: <ResetPassword />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   //<React.StrictMode>
-    <AuthProvider>
-      <CartProvider>
-        <RouterProvider router={router} />
-      </CartProvider>
-    </AuthProvider>
+  <AuthProvider>
+    <CartProvider>
+      <RouterProvider router={router} />
+    </CartProvider>
+  </AuthProvider>
   //</React.StrictMode>
 );

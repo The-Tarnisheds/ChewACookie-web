@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import CookieItem from "./CookieItem";
 import { Product } from "../types/product";
+import { motion } from "framer-motion";
 
 export default function CookieList() {
   const scrollContainer = useRef<HTMLDivElement>(null);
@@ -26,9 +27,23 @@ export default function CookieList() {
 
   return (
     <section className="relative container mx-auto px-4 py-8">
-      <h2 style={{ fontFamily: 'Poppins' }} className="text-center text-5xl font-bold text-amber-800 mb-4">
+      <motion.h2
+        style={{ fontFamily: "Poppins" }}
+        className="text-4xl font-serif font-bold text-center mb-12 text-amber-800 cursor-default"
+        whileHover={{
+          scale: 1.03,
+          textShadow: "0 5px 15px rgba(146, 64, 14, 0.2)",
+        }}
+        whileTap={{
+          scale: 0.98,
+        }}
+        transition={{
+          hover: { duration: 0.3 },
+          tap: { duration: 0.2 },
+        }}
+      >
         Nuestro Menú
-      </h2>
+      </motion.h2>
 
       <div className="relative">
         {/* Flechas de navegación */}
