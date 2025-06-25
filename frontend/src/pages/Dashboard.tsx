@@ -121,8 +121,7 @@ export default function Dashboard() {
               whileHover={{ scale: 1.1 }}
             >
               {totalSales
-                ? formatNumber(totalSales.data) + " CLP"
-                : "Cargando..."}
+                ? formatNumber(totalSales.data) : "Cargando..."}
             </motion.div>
           </div>
         </motion.div>
@@ -149,7 +148,7 @@ export default function Dashboard() {
               className="text-5xl font-bold text-[#af040d] mb-2"
               whileHover={{ scale: 1.1 }}
             >
-              {totalOrders ? formatNumber(totalOrders.data) : "Cargando..."}
+              {totalOrders ? totalOrders.data : "Cargando..."}
             </motion.div>
           </div>
         </motion.div>
