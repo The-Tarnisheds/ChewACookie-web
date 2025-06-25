@@ -18,7 +18,7 @@ router.post(`${baseUrl}/login`, loginUser);
 router.put(`${baseUrl}/edit-user`, verifyToken, editUserPersonalData);
 
 router.post(`${baseUrl}/recuperar`, enviarRecuperacion);
-router.post(`${baseUrl}/restablecer`, reestablecerContrasena);
+router.post(`${baseUrl}/reestablecer`, reestablecerContrasena);
 
 const users = router;
 export default users;

@@ -23,8 +23,7 @@ export const enviarRecuperacion = async (
       return;
     }
 
-    // Enlace directo (¡INSEGURO! Solo para pruebas)
-    const resetLink = `http://localhost:3000/reset-password?email=${encodeURIComponent(
+    const resetLink = `http://localhost:5173/reestablecer?email=${encodeURIComponent(
       email
     )}`;
 
@@ -73,21 +72,21 @@ export const reestablecerContrasena = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { email, password } = req.body; // Ahora solo requiere email y nueva contraseña
+  const { email, password } = req.body;
 
   try {
-    // Busca al usuario directamente por email
     const user = await Usuario.findOne({ where: { email } });
+
     if (!user) {
-      res.status(404).json({
-        success: false,
-        message: "Usuario no encontrado",
-      });
+      res
+        .status(404)
+        .json({ success: false, message: "Usuario no encontrado" });
       return;
     }
 
-    // Hashea y actualiza la contraseña
+    // Hashear la nueva contraseña antes de guardarla
     const hashedPassword = await bcrypt.hash(password, 10);
+
     await user.update({ pass: hashedPassword });
 
     res.json({
@@ -102,7 +101,6 @@ export const reestablecerContrasena = async (
     });
   }
 };
-
 function toTitleCase(str: string) {
   return str
     .toLowerCase()
