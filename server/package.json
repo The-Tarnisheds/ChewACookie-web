@@ -29,6 +29,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/mercadopago": "^1.5.11",
     "@types/node": "^22.13.17",
+    "@types/nodemailer": "^6.4.17",
     "@types/pg": "^8.15.4",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",

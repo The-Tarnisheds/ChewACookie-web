@@ -20,6 +20,7 @@ app.use((req, res, next) => {
 
 const allowedOrigins = [
   "https://rt2c7pr1-5173.brs.devtunnels.ms",
+  "https://wz66hp6d-5173.brs.devtunnels.ms/",
   "http://localhost:5173",
   "https://bb57d3vq-5173.brs.devtunnels.ms",
 ];
