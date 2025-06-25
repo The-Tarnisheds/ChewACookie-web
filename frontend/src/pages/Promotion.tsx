@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import WhatsAppButton from "../components/WhatsAppButton";
 import Footer from "../components/Footer";
-import ChewPoints from "../../assets/chewpoints.png";
+import ChewPoints from "../../assets/chewpoints.jpeg";
 
 export default function Promotions() {
   // Productos canjeables
