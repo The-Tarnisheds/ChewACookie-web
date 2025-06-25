@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CookieList from "../components/CookieList";
 import Footer from "../components/Footer";
 import WhatsAppButton from "../components/WhatsAppButton";
@@ -8,6 +8,23 @@ import { useInView } from "react-intersection-observer";
 export default function HomePage() {
   const controls = useAnimation();
   const [ref, inView] = useInView();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const images = [
+    "assets/banner.jpg",
+    "assets/banner2.jpg",
+    "assets/banner3.jpg",
+    "assets/banner4.jpg",
+    "assets/banner5.jpg",
+    "assets/banner6.jpg",
+  ];
+
+  // Auto-avance del carrusel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [images.length]);
 
   useEffect(() => {
     if (inView) {
@@ -27,7 +44,7 @@ export default function HomePage() {
   };
 
   return (
-    <main className="bg-amber-50 min-h-screen">
+    <main className="bg-amber-50 min-h-screen rounded-4xl">
       {/* Hero Section */}
       <header className="container mx-auto px-4 pt-8 pb-16">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
@@ -144,6 +161,120 @@ export default function HomePage() {
           </motion.div>
         </div>
       </header>
+
+      {/* Carrusel */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="py-12 bg-gradient-to-b from-amber-50 to-amber-100"
+      >
+        <div className="container mx-auto px-4">
+          <motion.h2
+            style={{ fontFamily: "Poppins" }}
+            className="text-4xl font-serif font-bold text-center mb-12 text-amber-800"
+            whileHover={{
+              scale: 1.03,
+              textShadow: "0 5px 15px rgba(146, 64, 14, 0.2)",
+            }}
+            whileTap={{
+              scale: 0.98,
+            }}
+            transition={{
+              hover: { duration: 0.3 },
+              tap: { duration: 0.2 },
+            }}
+          >
+            Nuestras Creaciones
+          </motion.h2>
+
+          <div className="relative w-auto h-[500px] md:h-[500px] overflow-hidden rounded-2xl shadow-xl">
+            {/* Slides */}
+            {images.map((img, index) => (
+              <motion.div
+                key={index}
+                className="absolute inset-0 w-full h-full"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: index === currentSlide ? 1 : 0,
+                  zIndex: index === currentSlide ? 10 : 0,
+                }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+              >
+                <img
+                  src={img}
+                  alt={`Galería de productos ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            ))}
+
+            {/* Controles */}
+            <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center gap-2">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === currentSlide ? "bg-redchew w-6" : "bg-whitechew"
+                  }`}
+                  aria-label={`Ir a slide ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Flechas de navegación */}
+            <button
+              onClick={() =>
+                setCurrentSlide(
+                  (prev) => (prev - 1 + images.length) % images.length
+                )
+              }
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 p-2 rounded-full shadow-md hover:bg-white transition-all"
+              aria-label="Slide anterior"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-amber-800"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            <button
+              onClick={() =>
+                setCurrentSlide((prev) => (prev + 1) % images.length)
+              }
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 p-2 rounded-full shadow-md hover:bg-white transition-all"
+              aria-label="Siguiente slide"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-amber-800"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </motion.section>
 
       {/* Sección de menú */}
       <motion.section
