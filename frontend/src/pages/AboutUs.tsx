@@ -213,7 +213,7 @@ export default function AboutUs() {
                 className="rounded-xl shadow-md w-85 h-auto object-cover"
               />
             </motion.div>
-            <div className="flex-1">
+            <div className="flex-1 ml-4">
               <motion.h2
                 className="flex items-center text-3xl md:text-4xl font-serif font-bold text-amber-800 mb-4"
                 whileHover={{ x: 5 }}
@@ -221,7 +221,7 @@ export default function AboutUs() {
                 <User size={36} className="mr-3" />
                 Acerca de Mí
               </motion.h2>
-              <div className="text-black text-lg space-y-4">
+              <div className="text-black text-lg space-y-4 ">
                 <p>
                   <motion.span
                     className="font-bold text-amber-800"

@@ -36,14 +36,14 @@ export default function Catalogo() {
         </p>
       </header>
 
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row  gap-6  ">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row  gap-6  ">
         {/* Filtro en la izquierda */}
         <div className="md:w-1/4 lg:w-1/4 mt-12">
           <Filter onSearch={setFilters} />
         </div>
 
         {/* Galletas en la derecha */}
-        <div className="md:w-3/4 lg:w-3/4">
+        <div className="md:w-3/4 lg:w-3/4 max-w-3xl">
           <CookieGrid filters={filters} />
         </div>
       </div>

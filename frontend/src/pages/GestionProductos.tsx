@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { motion, useAnimation, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-
+import SideBar from "../components/SideBar";
 import axios from "axios";
 
 export default function Crud() {
@@ -9,7 +9,10 @@ export default function Crud() {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [newProduct, setNewProduct] = useState<any>(null);
+
 
   const closeModal = () => {
     setIsEditOpen(false);
@@ -33,25 +36,6 @@ export default function Crud() {
       console.error("Error al eliminar el producto:", error);
     }
   };
-
-  // const handleEdit = async (product: any) => {
-  //   try {
-  //     const res = await axios.put(
-  //       `http://localhost:3000/api/cookies/edit/${product.id_producto}`,
-  //       {
-  //         nombre: product.nombre,
-  //         descripcion: product.descripcion,
-  //         precio: product.precio,
-  //         imagen: product.imagen,
-  //         stock: product.stock,
-  //         id_categoria: product.categoria_id,
-  //       }
-  //     );
-  //     console.log("Producto editado correctamente:", res.data);
-  //   } catch (error) {
-  //     console.error("Error al editar el producto:", error);
-  //   }
-  // };
 
   const fetchData = async () => {
     try {
@@ -88,90 +72,274 @@ export default function Crud() {
     }
   };
 
+  const handleCreate = async (newProduct: any) => {
+  if (!newProduct) {
+    console.error("No hay datos para crear el producto");
+    return;
+  }
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/api/cookies/create",
+      newProduct
+    );
+    setProducts([...products, newProduct]);
+    setIsCreateOpen(false);
+    console.log("Producto creado exitosamente:", response.data);
+  } catch (error) {
+    console.error("Error al crear producto:", error);
+  }
+};
+
   return (
-    <main className="relative bg-pinkchew min-h-screen rounded-md text-center shadow-2xl">
-      <div>
-        <motion.div
-          style={{ fontFamily: "Poppins" }}
-          className="bg-white rounded-xl shadow-lg p-6 mx-4 mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3, type: "spring" }}
+    <main className="relative flex max-w-full rounded-md text-center shadow-2xl">
+  <SideBar />
+  <div>
+    <motion.div
+      style={{ fontFamily: "Poppins" }}
+      className="bg-lightbrownchew rounded-xl shadow-lg p-6 mx-4 mb-10 max-w-6xl max-h-screen overflow-auto"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.3, type: "spring" }}
+    >
+      <h3 className="text-2xl font-bold text-redchew mb-6">Gestión de Productos</h3>
+      <div className="flex justify-end mb-6">
+        <button
+          className="bg-redchew text-white rounded-md flex items-center px-4 py-2 hover:bg-brownchew transition-colors"
+          onClick={() => {
+            setNewProduct({
+              nombre: "",
+              descripcion: "",
+              stock: 0,
+              precio: 0,
+              id_categoria: "",
+              imagen: "assets/default.webp",
+            });
+            setIsCreateOpen(true);
+          }}
         >
-          <h3
-            style={{ fontFamily: "Poppins" }}
-            className="text-xl font-bold text-[#592d17] mb-4"
-          >
-            Gestión de Productos
-          </h3>
-          <div className="flex justify-end mb-4">
-          <button
-            style={{ fontFamily: "Poppins" }}
-            className="w-fit h-10 bg-redchew text-white rounded-md  hover:bg-brownchew transition-colors flex items-center justify-center p-4 "
-          >
-            <FaPlus className="w-5 h-5" />
-            <span className="ml-2">Agregar Producto</span>
-          </button>
-
-          </div>
-          <div className="text-center">
-            {products.length > 0 ? (
-              <AnimatePresence>
-                {products.map((product: any) => (
-                  <motion.div
-                    key={product.id_producto}
-                    className="flex flex-row bg-whitechew rounded-lg shadow-lg items-center gap-4 mb-6 p-2 w-full"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9, x: 100 }} // Desaparece hacia la derecha
-                    transition={{ duration: 0.3 }}
-                  >
-                    <img
-                      src={product.imagen || "assets/default.jpg"}
-                      alt={product.nombre}
-                      className="h-16 w-16 rounded-lg flex-shrink-0"
-                    />
-                    <h3 className="w-[200px] truncate">{product.nombre}</h3>
-                    <h3 className="w-[350px] overflow-hidden text-ellipsis break-words line-clamp-3 text-justify">
-                      Descripción: {product.descripcion}
-                    </h3>
-
-                    <h3 className="w-[100px] text-center">
-                      Stock: {product.stock}
-                    </h3>
-
-                    <h3 className="w-[120px] text-center">
-                      Precio: {formatNumber(product.precio)}
-                    </h3>
-
-                    <div className="flex flex-row gap-2 justify-end w-[200px]">
-                      <button
-                        style={{ fontFamily: "Poppins" }}
-                        className="w-10 h-10 bg-redchew text-white rounded-md hover:bg-brownchew transition-colors flex items-center justify-center"
-                        onClick={() => {
-                          setSelectedProduct(product);
-                          setIsEditOpen(true);
-                        }}
-                      >
-                        <FaEdit className="w-5 h-5" />
-                      </button>
-                      <button
-                        style={{ fontFamily: "Poppins" }}
-                        className="w-10 h-10 bg-redchew text-white rounded-md hover:bg-brownchew transition-colors flex items-center justify-center"
-                        onClick={() => handleDelete(product.id_producto)}
-                      >
-                        <FaTrash className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            ) : (
-              <p>No hay productos cargados...</p>
-            )}
-          </div>
-        </motion.div>
+          <FaPlus className="mr-2" /> Agregar Producto
+        </button>
       </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.length > 0 ? (
+          <AnimatePresence>
+            {products.map((product) => (
+              <motion.div
+                key={product.id_producto}
+                className="bg-whitechew rounded-xl shadow-md p-4 flex flex-col items-center"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9, x: 100 }}
+                transition={{ duration: 0.3 }}
+              >
+                <img
+                  src={product.imagen || "assets/default.jpg"}
+                  alt={product.nombre}
+                  className="h-32 w-32 rounded-lg object-cover mb-3"
+                />
+                <h3 className="text-brownchew font-semibold">{product.nombre}</h3>
+                <p className="text-sm text-gray-600 line-clamp-2">{product.descripcion}</p>
+                <p className="mt-1 text-sm">Stock: {product.stock}</p>
+                <p className="mt-1 text-sm">Precio: {formatNumber(product.precio)}</p>
+
+                <div className="flex gap-2 mt-3">
+                  <button
+                    className="bg-redchew text-white rounded-md p-2 hover:bg-brownchew transition-colors"
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      setIsEditOpen(true);
+                    }}
+                  >
+                    <FaEdit />
+                  </button>
+                  <button
+                    className="bg-redchew text-white rounded-md p-2 hover:bg-brownchew transition-colors"
+                    onClick={() => handleDelete(product.id_producto)}
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        ) : (
+          <p>No hay productos cargados...</p>
+        )}
+      </div>
+    </motion.div>
+  </div>
+
+  {/* Modal Crear Producto */}
+  <AnimatePresence>
+    {isCreateOpen && (
+      <motion.div
+        className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <motion.div
+          className="bg-whitechew rounded-2xl shadow-2xl p-6 w-full max-w-md overflow-auto"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.4 }}
+        >
+          <h3 className="text-xl font-bold text-redchew mb-4 text-center">Crear Producto</h3>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleCreate(newProduct);
+              setIsCreateOpen(false);
+            }}
+            className="space-y-4"
+          >
+            <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nombre
+                  </label>
+                  <input
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-redchew transition"
+                    value={newProduct?.nombre || ""}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        nombre: e.target.value,
+                      })
+                    }
+                    type="text"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Descripción
+                  </label>
+                  <textarea
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-redchew transition"
+                    value={newProduct?.descripcion || ""}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        descripcion: e.target.value,
+                      })
+                    }
+                    required
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Stock
+                  </label>
+                  <input
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-redchew transition"
+                    value={newProduct?.stock || ""}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        stock: Number(e.target.value),
+                      })
+                    }
+                    type="number"
+                    min={0}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Precio
+                  </label>
+                  <input
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-redchew transition"
+                    value={newProduct?.precio || ""}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        precio: Number(e.target.value),
+                      })
+                    }
+                    type="number"
+                    min={0}
+                    step="0.01"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Categoría
+                  </label>
+                  <select
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-redchew transition"
+                    value={newProduct?.id_categoria || ""}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        id_categoria: Number(e.target.value),
+                      })
+                    }
+                    required
+                  >
+                    <option value="" disabled>
+                      Selecciona una categoría
+                    </option>
+                    {categories.map((cat) => (
+                      <option key={cat.id_categoria} value={cat.id_categoria}>
+                        {cat.descripcion}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Imagen (URL)
+                  </label>
+                  <input
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-redchew transition"
+                    value={newProduct?.imagen || "assets/default.webp"}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        imagen: e.target.value,
+                      })
+                    }
+                    type="text"
+                    placeholder="https://ejemplo.com/imagen.jpg"
+                  />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-gray-300 text-gray-700 rounded-lg px-4 py-2 transition-colors hover:bg-gray-400"
+                    onClick={() => {
+                      setIsCreateOpen(false);
+                      setNewProduct(null);
+                    }}
+                  >
+                    Cancelar
+                  </motion.button>
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-redchew text-white rounded-lg px-4 py-2 transition-colors hover:bg-brownchew"
+                    
+                  >
+                    Guardar
+                  </motion.button>
+                </div>
+          </form>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
 
       <AnimatePresence>
         {isEditOpen && (
