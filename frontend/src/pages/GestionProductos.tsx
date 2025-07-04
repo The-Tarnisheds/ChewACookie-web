@@ -72,19 +72,26 @@ export default function Crud() {
     }
   };
 
-  const handleCreate = async (newProduct: any) => {
+ const handleCreate = async (newProduct: any) => {
   if (!newProduct) {
     console.error("No hay datos para crear el producto");
     return;
   }
   try {
+    console.log("Voy a enviar este producto:", newProduct);
     const response = await axios.post(
       "http://localhost:3000/api/cookies/create",
       newProduct
     );
-    setProducts([...products, newProduct]);
+    console.log("Respuesta del backend:", response.data);
+
+
+    const createdProduct = response.data.result;
+
+    setProducts([...products, createdProduct]); 
     setIsCreateOpen(false);
-    console.log("Producto creado exitosamente:", response.data);
+    setNewProduct(null);
+    console.log("Producto creado exitosamente:", createdProduct);
   } catch (error) {
     console.error("Error al crear producto:", error);
   }

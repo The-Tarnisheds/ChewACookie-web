@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import WhatsAppButton from "../components/WhatsAppButton";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const controls = useAnimation();
@@ -17,6 +18,8 @@ export default function HomePage() {
     "assets/banner5.jpg",
     "assets/banner6.jpg",
   ];
+
+  const navigate = useNavigate();
 
   // Auto-avance del carrusel
   useEffect(() => {
@@ -130,6 +133,8 @@ export default function HomePage() {
                   boxShadow: "0 5px 15px -5px rgba(146, 64, 14, 0.2)",
                 }}
                 className="bg-redchew text-white px-8 py-3 rounded-full font-sans font-medium shadow-lg transition-all"
+                onClick={() => navigate("/catalogo")}
+
               >
                 Descubre nuestras galletas
               </motion.button>
@@ -328,6 +333,7 @@ export default function HomePage() {
             boxShadow: "0 5px 15px -5px rgba(255, 255, 255, 0.2)",
           }}
           className="bg-white text-redchew px-8 py-3 rounded-full font-sans font-bold shadow-lg transition-all"
+          onClick={() => navigate("/catalogo")}
         >
           <a href="/catalogo">ir a catálogo</a>
         </motion.button>

@@ -71,7 +71,7 @@ export default function RegisterForm() {
         const data = await res.json();
         localStorage.setItem("user", JSON.stringify(data.usuario));
         console.log("Registro exitoso:", data);
-        navigate("/");
+        navigate("/login");
     } catch (err) {
         console.error("Error al enviar el formulario:", err);
     }
