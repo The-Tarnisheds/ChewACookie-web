@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Admin } from "../models/usuario.";
 import { AuthenticatedRequest } from "../middlewares/authMiddleware";
+import { Promo } from "../models/pedido";
 
 import nodemailer from "nodemailer";
 
@@ -359,4 +360,32 @@ const editUserPersonalData = async (
     errorHandler(error as CustomError | undefined, req, res);
   }
 };
-export { createUser, getLocations, loginUser, editUserPersonalData };
+
+const getChewPoints = async(req: Request, res: Response): Promise<any> => {
+  const {email} = (req.params);
+
+  try {
+    const user = await findUserByEmail(email);
+
+    if (!user) {
+      return res.status(HttpStatusCode.NOT_FOUND).json({
+        message: "Usuario no encontrado",
+        success: false,
+      });
+    }
+
+    const promo = await Promo.findOne({
+      where: { id_usuario: user.get("id_usuario") },
+    })
+
+    const chewPoints = promo ? promo.get("puntos") : 0;
+
+    res.status(HttpStatusCode.OK).json({
+      message: "Chew points fetched successfully",
+      data: chewPoints,
+    });
+  } catch (error) {
+    errorHandler(error as CustomError | undefined, req, res);
+  }
+}
+export { createUser, getLocations, loginUser, editUserPersonalData, getChewPoints};

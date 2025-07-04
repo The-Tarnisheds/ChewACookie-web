@@ -20,12 +20,38 @@ import { EditableAddress } from "../components/EditableAddress";
 export default function Profile() {
   const { user, logout, updateUser } = useAuth();
   const [userData, setUserData] = useState<any>(null);
+  const [chewPoints, setChewPoints] = useState<number>(0);
 
   useEffect(() => {
     if (user) {
       setUserData(user);
     }
   }, [user]);
+  console.log("User data:", userData);
+
+  useEffect(() => {
+    const fetchChewPoints = async () => {
+      try {
+        const user = localStorage.getItem("user");
+        const parsedUser = user ? JSON.parse(user) : null;
+        axios
+          .get(
+            `http://localhost:3000/api/users/chew-points/${parsedUser?.email}`
+          )
+          .then((response) => {
+            const chewPoints = response.data.data;
+            console.log("ChewPoints obtenidos:", chewPoints);
+            setChewPoints(chewPoints);
+          })
+          .catch((error) => {
+            console.error("Error fetching ChewPoints:", error);
+          });
+      } catch (error) {
+        console.error("Error al obtener ChewPoints:", error);
+      }
+    };
+    fetchChewPoints();
+  }, []);
 
   const handleUpdateUser = async (
     field: string,
@@ -229,16 +255,37 @@ export default function Profile() {
               boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h3
+            <motion.div
+              className="bg-white rounded-xl shadow-lg p-8 mb-8 relative"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+              whileHover={{
+                y: -5,
+                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <h2
                 style={{ fontFamily: "Poppins" }}
-                className="text-xl font-bold text-[#592d17]"
+                className="text-2xl font-bold text-[#592d17] mb-6 pb-2 border-b border-[#f4e9d7]"
               >
                 Dirección
-              </h3>
-              <div className="flex space-x-2">
-                {userData.direccion && (
-                  <>
+              </h2>
+
+              {userData.direccion ? (
+                <motion.div
+                  className="bg-[#fdfcfb] rounded-lg shadow-md px-6 py-4 border border-gray-200 flex justify-between items-start"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="text-gray-800 font-medium text-base leading-relaxed">
+                    {userData.direccion.calle} #{userData.direccion.numero}
+                    <br />
+                    {userData.direccion.comuna}, {userData.direccion.region}
+                  </div>
+
+                  <div className="flex space-x-2 ml-4 mt-1">
                     <motion.button
                       className="text-[#af040d] p-2 rounded-full hover:bg-[#ffdede]"
                       whileHover={{ scale: 1.2 }}
@@ -253,10 +300,14 @@ export default function Profile() {
                     >
                       <FaTrash />
                     </motion.button>
-                  </>
-                )}
-              </div>
-            </div>
+                  </div>
+                </motion.div>
+              ) : (
+                <p className="text-gray-500 italic">
+                  No se ha agregado una dirección aún.
+                </p>
+              )}
+            </motion.div>
 
             {!userData.direccion && (
               <motion.button
@@ -304,7 +355,7 @@ export default function Profile() {
                 className="text-5xl font-bold text-[#af040d] mb-2"
                 whileHover={{ scale: 1.1 }}
               >
-                0
+                {chewPoints}
               </motion.div>
               <p style={{ fontFamily: "Poppins" }} className="text-[#592d17]">
                 Puntos acumulados
